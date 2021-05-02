@@ -4,4 +4,3 @@
 - import_playbook: 03-basic-setup.yml
 - import_playbook: 04-lxd-setup.yml
 - import_playbook: 05-lxd-remotes-setup.yml
-- import_playbook: 06-TEMPLATE.yml
