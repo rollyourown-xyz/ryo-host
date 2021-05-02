@@ -15,7 +15,7 @@
 
 
 - name: Initialise LXD on host
-  hosts: "{{ wireguard_address_network_part }}.2"
+  hosts: host_wireguard_ip
   
   vars_files:
     - "{{ playbook_dir }}/../../../ryo-control-node/configuration/configuration.yml"
@@ -53,7 +53,7 @@
 
 
 - name: Add local machine as LXD remote on host
-  hosts: "{{ wireguard_address_network_part }}.2"
+  hosts: host_wireguard_ip
   
   vars_files:
     - "{{ playbook_dir }}/../../../ryo-control-node/configuration/configuration.yml"
