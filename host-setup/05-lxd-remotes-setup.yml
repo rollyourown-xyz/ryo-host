@@ -3,7 +3,7 @@
   hosts: local
 
   vars_files:
-    - "{{ playbook_dir }}/../../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../../ryo-control-node/configuration/configuration.yml"
 
   vars:
     ansible_user: "{{ local_non_root_user }}"
@@ -18,8 +18,8 @@
   hosts: host_wireguard_ip
   
   vars_files:
-    - "{{ playbook_dir }}/../../../ryo-control-node/configuration/configuration.yml"
-    - "{{ playbook_dir }}/../../configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../configuration/configuration.yml"
   
   vars:
     ansible_port: "{{ host_new_ssh_port }}"
@@ -39,9 +39,9 @@
   hosts: local
   
   vars_files:
-    - "{{ playbook_dir }}/../../../ryo-control-node/configuration/configuration.yml"
-    - "{{ playbook_dir }}/../../../ryo-control-node/configuration/lxd_core_trust_password.yml"
-    - "{{ playbook_dir }}/../../configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../../ryo-control-node/configuration/lxd_core_trust_password.yml"
+    - "{{ playbook_dir }}/../../../configuration/configuration.yml"
   
   vars:
     ansible_user: "{{ local_non_root_user }}"
@@ -56,9 +56,9 @@
   hosts: host_wireguard_ip
   
   vars_files:
-    - "{{ playbook_dir }}/../../../ryo-control-node/configuration/configuration.yml"
-    - "{{ playbook_dir }}/../../../ryo-control-node/configuration/lxd_core_trust_password.yml"
-    - "{{ playbook_dir }}/../../configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../../ryo-control-node/configuration/lxd_core_trust_password.yml"
+    - "{{ playbook_dir }}/../../../configuration/configuration.yml"
   
   vars:
     ansible_port: "{{ host_new_ssh_port }}"

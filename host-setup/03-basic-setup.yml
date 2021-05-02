@@ -3,8 +3,8 @@
   hosts: host_wireguard_ip
   
   vars_files:
-    - "{{ playbook_dir }}/../../../ryo-control-node/configuration/configuration.yml"
-    - "{{ playbook_dir }}/../../configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../configuration/configuration.yml"
   
   vars:
     ansible_port: "{{ host_initial_ssh_port }}"
