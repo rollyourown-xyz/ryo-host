@@ -1,0 +1,42 @@
+---
+# The firewall rules script is project-specific and opens only the necessary ports for the project
+#
+- name: Copy firewall rules script (making executable)
+  template:
+    mode: 0770
+    owner: root
+    group: root
+    dest: /usr/local/bin/iptables-basic-rules.sh
+    src: iptables-basic-rules.sh.j2
+    force: yes
+
+
+# The firewall rules reset script is optional, to enable manual firewall reset on the host
+#
+- name: Copy firewall rules reset script (making executable)
+  copy:
+    mode: 0770
+    owner: root
+    group: root
+    dest: /usr/local/bin/iptables-rules-reset.sh
+    src: iptables-rules-reset.sh
+    force: yes
+  register: changes_made
+
+
+- name: Copy basic firewall service definition
+  copy:
+    mode: 0644
+    owner: root
+    group: root
+    dest: /lib/systemd/system/iptables-basic-rules.service
+    src: iptables-basic-rules.service
+    force: yes
+  register: changes_made
+
+
+- name: Enable basic firewall service
+  service:
+    name: iptables-basic-rules.service
+    enabled: yes
+    state: started

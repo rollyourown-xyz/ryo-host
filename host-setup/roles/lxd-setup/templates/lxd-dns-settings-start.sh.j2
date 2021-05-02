@@ -1,0 +1,15 @@
+#!/bin/sh
+echo -n "DNS setup started"
+
+sudo lxc network list
+
+sudo resolvectl dns lxd-dmz '{{ lxd_dmz_network_part }}.1'
+sudo resolvectl domain lxd-dmz '~lxd-dmz'
+
+sudo resolvectl dns lxd-fe '{{ lxd_frontend_network_part }}.1'
+sudo resolvectl domain lxd-fe '~lxd-fe'
+
+sudo resolvectl dns lxd-be '{{ lxd_backend_network_part }}.1'
+sudo resolvectl domain lxd-be '~lxd-be'
+
+echo "DNS setup completed"

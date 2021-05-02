@@ -1,0 +1,57 @@
+---
+- name: Generate wireguard host private key
+  shell: "wg genkey"
+  register: generated_host_private_key
+
+
+- name: Generate wireguard host public key
+  shell:
+    cmd: "wg pubkey"
+    stdin: "{{ generated_host_private_key.stdout }}"
+    stdin_add_newline: no
+  register: generated_host_public_key
+
+
+- name: Generate wireguard local private key
+  shell: "wg genkey"
+  register: generated_local_private_key
+
+
+- name: Generate wireguard local public key
+  shell:
+    cmd: "wg pubkey"
+    stdin: "{{ generated_local_private_key.stdout }}"
+    stdin_add_newline: no
+  register: generated_local_public_key
+
+
+- name: Generate wireguard preshared key
+  command: "wg genpsk"
+  register: generated_preshared_key
+
+
+- name: Create host wireguard configuration file
+  template:
+    mode: 644
+    owner: root
+    group: root
+    dest: "{{ playbook_dir }}/../configuration/{{ host_hostname }}.conf"
+    src: ryo-host.conf.j2
+    force: yes
+
+
+- name: Create local wireguard configuration file
+  template:
+    mode: 640
+    owner: root
+    group: root
+    dest: "/etc/wireguard/{{ host_hostname }}.conf"
+    src: ryo-local.conf.j2
+    force: yes
+
+
+- name: Enable wireguard interface {{ host_hostname }} as service
+  service:
+    name: "wg-quick@{{ host_hostname }}"
+    enabled: yes
+    state: restarted

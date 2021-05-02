@@ -1,0 +1,139 @@
+---
+#-----------------------------------------------------------------------------------------------------------------------------------
+# Use of 2FA is recommended for SSH access via public internet but requires additional preparation before host configuration
+# See documentation at https://rollyourown.xyz/ ...
+
+#### TODO Link needs completing ^^^ 
+
+#-----------------------------------------------------------------------------------------------------------------------------------
+
+
+# Install google-authenticator PAM module if the value of the variable host_non_root_use_google_authenticator in host_configuration.yml is true,
+# otherwise skip
+#
+- name: Install libpam-google-authenticator
+  apt:
+    name: libpam-google-authenticator
+    update_cache: yes
+    state: present
+  register: changes_made
+  when: local_non_root_use_google_authenticator
+
+
+# Copy .google-authenticator configuration file for non-root user if the value of the variable
+# host_non_root_use_google_authenticator in host_configuration.yml is true - see documentation linked above
+#
+- name: Copy google-authenticator configuration file
+  copy:
+    mode: 0400
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: "/home/{{ host_non_root_user }}/.google_authenticator"
+    src: "{{ local_non_root_user_google_authenticator_file }}"
+    force: yes
+  register: changes_made
+  when: local_non_root_use_google_authenticator
+
+
+#-----------------------------------------------------------------------------------------------------------------------------------
+# Change the SSH port, disable SSH password authentication, disallow root login and allow only the non-root user to log in via SSH
+# Optionally, enable 2FA for SSH login via the public internet. 2FA is not required for login via a wireguard tunnel so that further
+# automation tools (packer, terraform) can use SSH access without manual intervention
+#-----------------------------------------------------------------------------------------------------------------------------------
+
+# Change the SSH port
+#
+- name: Change the SSH port
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#Port'
+    line: "Port {{ host_new_ssh_port }}"
+
+
+# Disable SSH password authentication
+#
+- name: Disable SSH password authentication
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^(# *)?PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+
+
+# Disallow root login
+#
+- name: Disallow root login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^(# *)?PermitRootLogin'
+    line: 'PermitRootLogin no'
+
+
+# Allow only the non-root user to log in via SSH
+#
+- name: Allow only the non-root user to log in via SSH
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "AllowUsers {{ host_non_root_user }}"
+
+
+# Set ChallengeResponseAuthentication in SSH config file (no 2FA)
+#
+- name: Set ChallengeResponseAuthentication in SSH config file (no 2FA)
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^(# *)?ChallengeResponseAuthentication'
+    line: 'ChallengeResponseAuthentication no'
+  when: not local_non_root_use_google_authenticator
+
+
+# Set ChallengeResponseAuthentication in SSH config file (2FA)
+#
+- name: Set ChallengeResponseAuthentication in SSH config file (2FA)
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^(# *)?ChallengeResponseAuthentication'
+    line: 'ChallengeResponseAuthentication yes'
+  when: local_non_root_use_google_authenticator
+
+
+# Set authentication methods for 2FA
+#
+- name: Set authentication methods for 2FA
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    insertafter: '^UsePAM yes'
+    line: 'AuthenticationMethods publickey,password publickey,keyboard-interactive'
+  when: local_non_root_use_google_authenticator
+
+
+# Allow 2FA-less login via wireguard interface (2FA)
+#
+- name: Allow 2FA-less login via wireguard interface (2FA)
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      Match Address {{ host_wireguard_address_range }}
+        AuthenticationMethods publickey
+    state: present
+  when: local_non_root_use_google_authenticator
+
+
+# Set PAM to use pam_google_authenticator (2FA) 
+#
+- name: Set PAM to use pam_google_authenticator (2FA)
+  lineinfile:
+    path: /etc/pam.d/sshd
+    line: 'auth required pam_google_authenticator.so'
+  when: local_non_root_use_google_authenticator
+
+
+# Exclude common-auth (2FA) 
+#
+- name: Exclude common-auth (2FA)
+  lineinfile:
+    path: /etc/pam.d/sshd
+    regexp: '^@include common-auth'
+    line: '# @include common-auth'
+  when: local_non_root_use_google_authenticator

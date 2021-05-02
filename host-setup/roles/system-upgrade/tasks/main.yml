@@ -1,0 +1,15 @@
+---
+- name: Update package cache and ensure all packages are updated
+  apt:
+    upgrade: 'yes'
+    update_cache: yes
+  register: changes_made
+
+- name: Autoremove unused packages
+  apt:
+    autoremove: yes
+  register: changes_made
+
+- name: Reboot the machine
+  reboot:
+  when: changes_made is changed

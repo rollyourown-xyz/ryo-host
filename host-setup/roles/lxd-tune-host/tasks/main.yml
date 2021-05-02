@@ -1,0 +1,192 @@
+---
+## Adjust host configuration for LXD Production setup
+## Parameter values as described in: https://linuxcontainers.org/lxd/docs/master/production-setup
+
+
+## Settings in /etc/security/limits.conf
+
+- name: Set soft limit nofile for all in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: '*     soft  nofile   1048576'
+    state: present
+    insertbefore: '^# End of file'
+  register: changes_made
+
+
+- name: Set hard limit nofile for all in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: '*     hard  nofile   1048576'
+    state: present
+    insertbefore: '^# End of file'
+  register: changes_made
+
+
+- name: Set soft limit nofile for root in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: 'root  soft  nofile   1048576'
+    state: present
+    insertbefore: '^# End of file'
+  register: changes_made
+
+
+- name: Set hard limit nofile for root in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: 'root  hard  nofile   1048576'
+    state: present
+    insertbefore: '^# End of file'
+  register: changes_made
+
+
+- name: Set soft limit memlock for all in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: '*     soft  memlock  unlimited'
+    state: present
+    insertbefore: '^# End of file'
+  register: changes_made
+
+
+- name: Set hard limit memlock for all in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: '*     hard  memlock  unlimited'
+    state: present
+    insertbefore: '^# End of file'
+  register: changes_made
+
+
+- name: Set soft limit memlock for root in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: 'root  soft  memlock  unlimited'
+    state: present
+    insertbefore: '^# End of file'
+  register: changes_made
+
+
+- name: Set hard limit memlock for root in /etc/security/limits.conf
+  lineinfile:
+    dest: /etc/security/limits.conf
+    line: 'root  hard  memlock  unlimited'
+    state: present
+    insertbefore: '^# End of file'
+  register: changes_made
+
+
+
+## Settings in /etc/sysctl.conf
+## Reload no as changes_made will cause reboot
+
+- name: Set sysctl entry fs.inotify.max_queued_events
+  sysctl:
+    name: fs.inotify.max_queued_events
+    value: '1048576'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry fs.inotify.max_user_instances
+  sysctl:
+    name: fs.inotify.max_user_instances
+    value: '1048576'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry fs.inotify.max_user_watches
+  sysctl:
+    name: fs.inotify.max_user_watches
+    value: '1048576'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry vm.max_map_count
+  sysctl:
+    name: vm.max_map_count
+    value: '262144'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry kernel.dmesg_restrict
+  sysctl:
+    name: kernel.dmesg_restrict
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry net.ipv4.neigh.default.gc_thresh3
+  sysctl:
+    name: net.ipv4.neigh.default.gc_thresh3
+    value: '8192'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry net.ipv6.neigh.default.gc_thresh3
+  sysctl:
+    name: net.ipv6.neigh.default.gc_thresh3
+    value: '8192'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry net.core.bpf_jit_limit
+  sysctl:
+    name: net.core.bpf_jit_limit
+    value: '3000000000'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry kernel.keys.maxkeys
+  sysctl:
+    name: kernel.keys.maxkeys
+    value: '2000'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry kernel.keys.maxbytes
+  sysctl:
+    name: kernel.keys.maxbytes
+    value: '2000000'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry fs.aio-max-nr
+  sysctl:
+    name: fs.aio-max-nr
+    value: '524288'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+

@@ -1,0 +1,27 @@
+---
+# Reboot the server and wait for reconnect
+# Note: ansible reboot module does not work if IP address has changed or 2FA has
+# been enabled on an internet-facing IP address. To test reboot success, we make sure
+# that the hosts's wireguard IP address is used
+#
+- name: Reboot the server if anything was changed
+  shell:
+    cmd: sleep 2 && reboot -n
+  async: 45
+  poll: 0
+  when: changes_made is changed
+
+- name: Change ansible IP address in the task
+  set_fact:
+    ansible_ssh_host: "{{ wireguard_address_network_part }}.2"
+    ansible_ssh_port: "{{ host_new_ssh_port }}"
+  when: changes_made is changed
+
+- name: Wait 10 seconds and then check the server is restarted
+  wait_for_connection:
+    delay: 10
+    sleep: 2
+    connect_timeout: 5
+    timeout: 300
+  when: changes_made is changed
+  

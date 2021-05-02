@@ -1,0 +1,24 @@
+---
+- name: Remove local machine as LXD remote on host if already present
+  shell:
+    cmd: 'lxc remote remove control'
+  become: yes
+  become_user: "{{ host_non_root_user }}"
+  ignore_errors: yes
+
+
+- name: Clear any previous LXD certificates on local machine
+  file:
+    path: "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ host_hostname }}.pem"
+    state: absent
+  with_items:
+    - "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ host_hostname }}.pem"
+    - /var/snap/lxd/common/lxd/server.crt
+    - /var/snap/lxd/common/lxd/server.key
+
+
+- name: Add local machine as LXD remote on host
+  shell:
+    cmd: 'lxc remote add control {{ wireguard_address_network_part }}.1 --accept-certificate=true --auth-type="tls" --password="{{ lxd_core_trust_password }}" --public=false'
+  become: yes
+  become_user: "{{ host_non_root_user }}"

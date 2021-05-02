@@ -1,0 +1,61 @@
+#!/bin/sh
+IPT="/sbin/iptables"
+
+echo -n "Loading iptables rules..."
+
+# By default, drop everything except outgoing traffic
+$IPT -P INPUT DROP
+$IPT -P FORWARD DROP
+$IPT -P OUTPUT ACCEPT
+
+
+## General rules
+## --------------
+
+# Allow incoming and outgoing for loopback interfaces
+$IPT -A INPUT -i lo -j ACCEPT
+$IPT -A OUTPUT -o lo -j ACCEPT
+
+# ICMP rule
+$IPT -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+
+# Allow established connections:
+$IPT -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allow SSH on custom TCP port
+$IPT -A INPUT -p tcp -m tcp --dport {{ host_new_ssh_port }} -j ACCEPT
+
+# Allow Wireguard on defined UDP port
+$IPT -A INPUT -p udp -m udp --dport {{ host_wireguard_port }} -j ACCEPT
+
+# Allow LXD remote connections on wireguard network
+$IPT -A INPUT -p tcp -m tcp --dport 8443 -s {{ wireguard_address_network_part }}.0/24 -d {{ wireguard_address_network_part }}.2/32 -j ACCEPT
+
+
+## Rules for LXD networks
+## ------------------------------------------------------------------------------------------------------------
+# Note: this provides NAT **to the internet** for LXD containers in networks lxd-dmz and lxd-fe
+# without using ipv4.nat=true on the LXD network definition (which would also NAT **between** the LXD networks)
+## ------------------------------------------------------------------------------------------------------------
+
+# NATting for internet traffic from lxd-dmz network
+$IPT -t nat -A POSTROUTING -s {{ lxd_dmz_network_part }}.0/24 -o eth+ -j MASQUERADE
+$IPT -t nat -A POSTROUTING -s {{ lxd_dmz_network_part }}.0/24 -o en+ -j MASQUERADE
+
+# NATting for internet traffic from lxd-fe network
+$IPT -t nat -A POSTROUTING -s {{ lxd_frontend_network_part }}.0/24 -o eth+ -j MASQUERADE
+$IPT -t nat -A POSTROUTING -s {{ lxd_frontend_network_part }}.0/24 -o en+ -j MASQUERADE
+
+# NATting for internet traffic from lxd-be network
+$IPT -t nat -A POSTROUTING -s {{ lxd_backend_network_part }}.0/24 -o eth+ -j MASQUERADE
+$IPT -t nat -A POSTROUTING -s {{ lxd_frontend_network_part }}.0/24 -o en+ -j MASQUERADE
+
+
+## Project-specific rules for LXD containers
+## -----------------------------------------
+
+# Allow HTTP and HTTPS
+$IPT -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT
+$IPT -A INPUT -p tcp -m tcp --dport 443 -j ACCEPT
+
+echo "rules loaded."

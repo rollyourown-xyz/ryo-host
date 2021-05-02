@@ -1,0 +1,7 @@
+---
+- name: Set hostname
+  hostname:
+    name: "{{ host_hostname }}"
+    use: systemd
+  register: changes_made
+  

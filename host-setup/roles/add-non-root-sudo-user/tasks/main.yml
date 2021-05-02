@@ -1,0 +1,52 @@
+---
+- name: Generate random salt
+  shell: "tr -dc A-Za-z0-9 </dev/urandom | head -c 12"
+  register: password_salt
+
+
+- name: Add non-root user
+  user:
+    name: "{{ host_non_root_user }}"
+    password: "{{ host_non_root_user_password | password_hash('sha512', password_salt.stdout) }}"
+    update_password: on_create
+    create_home: yes
+    shell: /bin/bash
+    groups:
+      - sudo
+    append: yes
+    state: present
+
+
+- name: Create the non-root user .ssh directory, if not present
+  file:
+    mode: 0700
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    path: "/home/{{ host_non_root_user }}/.ssh"
+    state: directory
+
+
+- name: Add SSH public keys for non-root user
+  authorized_key:
+    user: "{{ host_non_root_user }}"
+    key: "{{ lookup('file', local_non_root_user_ssh_public_key_file_path) }}"
+    state: present
+
+
+# Ensure non-root user can sudo without password
+#
+- name: Set includedir in sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    line: "#includedir /etc/sudoers.d"
+    state: present
+    validate: "/usr/sbin/visudo -cf %s"
+
+- name: Add non-root user to sudo without password
+  lineinfile:
+    path: /etc/sudoers.d/90-{{ host_non_root_user }}
+    line: '{{ host_non_root_user }} ALL=(ALL) NOPASSWD: ALL'
+    state: present
+    mode: 0440
+    create: yes
+    validate: 'visudo -cf %s'

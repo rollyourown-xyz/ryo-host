@@ -1,0 +1,14 @@
+---
+# Not needed for all rollyourown.xyz projects
+# Set ipv4 packet forwarding if the value of the variable host_ipv4_packet_forwarding in host_configuration.yml is true,
+# otherwise skip
+#
+- name: Enable ipv4 packet forwarding
+  sysctl:
+    name: net.ipv4.ip_forward
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  register: changes_made
+  when: host_ipv4_packet_forwarding

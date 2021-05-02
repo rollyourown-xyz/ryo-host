@@ -1,0 +1,7 @@
+---
+- name: Run lxc list to generate client certs before adding remote
+  shell:
+    cmd: 'lxc list'
+  become: yes
+  become_user: "{{ local_non_root_user }}"
+

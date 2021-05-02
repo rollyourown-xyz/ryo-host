@@ -1,0 +1,40 @@
+---
+- name: Set up non root user
+  hosts: host_public_ip
+  
+  vars_files:
+    - "{{ playbook_dir }}/../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../configuration/configuration.yml"
+  
+  vars:
+    ansible_port: "{{ host_initial_ssh_port }}"
+    ansible_user: "{{ host_root_user }}"
+    ansible_ssh_pass: "{{ host_root_password }}"
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+    ansible_become: no
+    transfer_method: scp
+  
+  roles:
+    - role: add-non-root-sudo-user
+
+
+- name: Initial host setup
+  hosts: host_public_ip
+  
+  vars_files:
+    - "{{ playbook_dir }}/../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../configuration/configuration.yml"
+  
+  vars:
+    ansible_port: "{{ host_initial_ssh_port }}"
+    ansible_user: "{{ host_non_root_user }}"
+    ansible_ssh_pass: "{{ host_non_root_user_password }}"
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+    ansible_become: yes
+    ansible_become_method: sudo
+    transfer_method: scp  
+  
+  roles:
+    - role: system-upgrade
+    - role: install-wireguard
+    - role: set-up-wireguard-host

@@ -1,0 +1,15 @@
+---
+- name: Set up control node wireguard for host
+  hosts: local
+  
+  vars_files:
+    - "{{ playbook_dir }}/../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../configuration/configuration.yml"
+  
+  vars:
+    ansible_user: "{{ local_non_root_user }}"
+    ansible_become: yes
+    ansible_become_password: "{{ local_non_root_user_password }}"
+
+  roles:
+    - role: set-up-wireguard-control-node

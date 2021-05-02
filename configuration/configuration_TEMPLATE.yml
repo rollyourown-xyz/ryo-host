@@ -1,0 +1,112 @@
+## If this file is moved to a different location, 
+# update config_path.yml with the new path to the file
+
+## WARNING: After adding configuration, never push this file, with secrets, 
+# to a repository or publish in any other way!
+
+
+#-----------------------
+# REQUIRED Configuration
+#-----------------------
+
+project_name: <PROJECT NAME>
+
+# Basic host configuration
+#-------------------------
+
+# Add the public IPv4 address of your host server here. 
+# !! Also add to the inventory.ini file
+host_public_ip: <IP ADDRESS>
+
+# Set the default SSH port, as provided by your server hosting provider
+host_initial_ssh_port: 22
+
+# Set the default root username here (probably 'root'), as provided by 
+# your server hosting provider
+host_root_user: root
+
+# Set the default root password here, as provided by your server 
+# hosting provider
+host_root_password: <INITIAL PASSWORD>
+
+# Define a non-root username
+host_non_root_user: <USER_NAME>
+
+# SECRET: Set a strong user password here. 
+host_non_root_user_password: <PASSWORD>
+
+
+# Project configuration
+#----------------------
+
+## This section will contain settings specific to the project. The following are
+## examples
+
+# Set the domain to be used for the project. The DNS A record for the project's 
+# domain must be set to point to the public IPv4 address of your host server
+project_domain_name: <DOMAIN>
+
+# Enter an email address for the administrator of this project, 
+# this will be used for letsencrypt certificates
+project_admin_email: <EMAIL ADDRESS>
+
+
+#----------------------------------------------------------------------------
+# DEFAULT Configuration - leave as default unless you know what you are doing
+#----------------------------------------------------------------------------
+
+# Host wireguard configuration
+#-----------------------------
+
+# Leave the following settings as default if this is the first project managed
+# by the control node. Change if other projects are already deployed on the control node
+# Make sure that these settings do not overlap with any other project - e.g. if
+# other projects managed by the control node use "10.0.1"  and "10.0.2", then
+# set this to "10.0.3" and also change the network part for [host_wireguard_ip]
+# in the project inventory file
+wireguard_address_network_part: "10.0.1"
+
+
+# Host LXD configuration
+#-----------------------------
+
+# Leave the following settings as default if this is the first project managed
+# by the control node. Change if other projects are already deployed on the control node
+# Make sure that these settings do not overlap with any other project - e.g. if
+# another project managed by the control node uses "10.10.0", "10.10.10", "10.10.11" and "10.10.12", then
+# set these to "10.11.0", "10.11.10", "10.11.11" and "10.11.12"
+lxd_br0_network_part: "10.10.0"
+lxd_dmz_network_part: "10.10.10"
+lxd_frontend_network_part: "10.10.11"
+lxd_backend_network_part: "10.10.12"
+
+# Change according to the available storage on the host. 
+# Set to leave at least 4GB for the operating system
+lxd_storage_pool_size: 50GB
+
+
+# Default host configuration
+#---------------------------
+
+# Leave as default or change according to preference
+host_new_ssh_port: 2222
+
+# Leave as default or change according to preference
+host_wireguard_port: 52222
+
+
+#-----------------------------------------------
+# Project-specific configuration - do not change
+#-----------------------------------------------
+
+# Do not change. True if needed for this project, otherwise false
+host_ipv4_packet_forwarding: true
+
+# Do not change. True if needed for this project, otherwise false
+host_veth0_enable: false
+
+# Do not change. Set if needed for this project, otherwise "none"
+host_veth0_macaddress: "none"
+
+# Do not change. Set if needed for this project, otherwise "none"
+host_veth0_ipaddress: "none"

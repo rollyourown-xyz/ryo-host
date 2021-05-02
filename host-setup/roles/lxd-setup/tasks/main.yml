@@ -1,0 +1,119 @@
+---
+
+- name: Make sure LXD apt packages are uninstalled and purged
+  apt:
+    name:
+      - lxd
+      - lxd-client
+      - liblxc1
+      - lxcfs
+    update_cache: no
+    purge: yes
+    state: absent
+  register: changes_made
+
+
+- name: Make sure ZFS Utils are installed
+  apt:
+    name: zfsutils-linux
+    update_cache: yes
+    state: present
+  register: changes_made
+
+
+- name: Make sure snapd is installed
+  apt:
+    name: snapd
+    update_cache: yes
+    state: present
+  register: changes_made
+
+
+- name: Make sure LXD snap package is installed
+  snap:
+    name: lxd
+    channel: 4.0/stable
+    state: present
+  register: changes_made
+
+
+- name: Enable shiftfs for LXD
+  command: snap set lxd shiftfs.enable=true
+  
+
+- name: Add non-root user to the lxd group
+  user:
+    name: "{{ host_non_root_user }}"
+    groups:
+      - lxd
+    append: yes
+    state: present
+
+
+- name: Copy LXD preseed file from template
+  template:
+    mode: 0640
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: /home/{{ host_non_root_user }}/preseed.yml
+    src: preseed.yml.j2
+    force: yes
+    backup: yes
+  register: lxd_preseed_changes_made
+
+
+- name: Initialise LXD with preseed file
+  shell:
+    cmd: lxd init --preseed < /home/{{ host_non_root_user }}/preseed.yml
+  when: lxd_preseed_changes_made is changed
+
+
+- name: Copy start script from template to configure host systemd-resolved and make executable
+  template:
+    mode: 0770
+    owner: root
+    group: root
+    dest: /usr/local/bin/lxd-dns-settings-start.sh
+    src: lxd-dns-settings-start.sh.j2
+    force: yes
+    backup: yes
+  register: dns_changes_made
+
+
+- name: Copy stop script from template to configure host systemd-resolved and make executable
+  template:
+    mode: 0770
+    owner: root
+    group: root
+    dest: /usr/local/bin/lxd-dns-settings-stop.sh
+    src: lxd-dns-settings-stop.sh.j2
+    force: yes
+    backup: yes
+  register: dns_changes_made
+
+
+- name: Copy service definition to execute host systemd-resolved script
+  copy:
+    mode: 0644
+    owner: root
+    group: root
+    dest: /lib/systemd/system/lxd-dns-settings.service
+    src: lxd-dns-settings.service
+    force: yes
+  register: dns_changes_made
+
+
+- name: Ensure lxd-dns-settings service is enabled and started at boot
+  service:
+    name: lxd-dns-settings
+    enabled: yes
+  register: dns_changes_made
+ 
+
+- name: Run systemd-resolved script
+  shell:
+    cmd: /usr/local/bin/lxd-dns-settings-start.sh
+  become: yes
+  become_method: sudo
+  when: dns_changes_made is changed
+  
