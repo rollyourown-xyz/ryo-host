@@ -1,0 +1,23 @@
+---
+## Generic directory for LXD container persistent storage
+## ------------------------------------------------------
+
+## Create directories on host to be mounted in containers
+
+- name: Create a directory for container mounts
+  file:
+    path: /var/containers
+    state: directory
+    mode: '0755'
+
+
+## Directories for project-specific LXD container persistent storage
+## -----------------------------------------------------------------
+
+## Create directory for project containers
+
+- name: Create a directory for container mounts for this project
+  file:
+    path: "/var/containers/{{ project_name }}"
+    state: directory
+    mode: '0755'
