@@ -3,8 +3,8 @@
   hosts: local
   
   vars_files:
-    - "{{ playbook_dir }}/../../ryo-control-node/configuration/configuration.yml"
-    - "{{ playbook_dir }}/../configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../../ryo-control-node/configuration/configuration.yml"
+    - "{{ playbook_dir }}/../../configuration/configuration.yml"
   
   vars:
     ansible_user: "{{ local_non_root_user }}"
