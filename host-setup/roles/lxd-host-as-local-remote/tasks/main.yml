@@ -1,7 +1,7 @@
 ---
 - name: Remove host as LXD remote on local machine if already present
   shell:
-    cmd: 'lxc remote remove {{ host_hostname }}'
+    cmd: 'lxc remote remove {{ project_name }}'
   become: yes
   become_user: "{{ local_non_root_user }}"
   ignore_errors: yes
@@ -9,16 +9,16 @@
 
 - name: Clear any previous LXD certificates on local machine
   file:
-    path: "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ host_hostname }}.pem"
+    path: "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ project_name }}.pem"
     state: absent
   with_items:
-    - "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ host_hostname }}.pem"
+    - "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ project_name }}.pem"
     - /var/snap/lxd/common/lxd/server.crt
     - /var/snap/lxd/common/lxd/server.key
 
 
 - name: Add host as LXD remote on local machine
   shell:
-    cmd: 'lxc remote add {{ host_hostname }} {{ wireguard_address_network_part }}.2 --accept-certificate=true --auth-type="tls" --password="{{ lxd_core_trust_password }}" --public=false'
+    cmd: 'lxc remote add {{ project_name }} {{ wireguard_address_network_part }}.2 --accept-certificate=true --auth-type="tls" --password="{{ lxd_core_trust_password }}" --public=false'
   become: yes
   become_user: "{{ local_non_root_user }}"

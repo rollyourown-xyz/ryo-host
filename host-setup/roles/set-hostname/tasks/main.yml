@@ -1,7 +1,7 @@
 ---
 - name: Set hostname
   hostname:
-    name: "{{ host_hostname }}"
+    name: "{{ project_name }}"
     use: systemd
   register: changes_made
   
