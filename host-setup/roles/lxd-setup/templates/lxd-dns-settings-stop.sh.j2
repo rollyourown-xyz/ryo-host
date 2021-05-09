@@ -1,8 +1,6 @@
 #!/bin/sh
 echo -n "DNS setup started"
 
-/usr/bin/systemd-resolve --interface lxd-dmz --revert
-/usr/bin/systemd-resolve --interface lxd-fe --revert
-/usr/bin/systemd-resolve --interface lxd-be --revert
+/usr/bin/systemd-resolve --interface lxd-{{ project_name }} --revert
 
 echo "DNS setup completed"

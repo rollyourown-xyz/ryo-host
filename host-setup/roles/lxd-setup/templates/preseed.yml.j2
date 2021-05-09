@@ -27,42 +27,18 @@ networks:
     ipv6.address: none
     dns.mode: managed
     dns.domain: lxd
-- name: lxd-dmz
-  description: "DMZ Network"
+- name: lxd-{{ project_name }}
+  description: "{{ project_name }} network"
   type: bridge
   managed: true
   config:
-    ipv4.address: '{{ lxd_dmz_network_part }}.1/24'
-    ipv4.dhcp.ranges: '{{ lxd_dmz_network_part }}.100-{{ lxd_dmz_network_part }}.254'
+    ipv4.address: '{{ lxd_project_network_part }}.1/24'
+    ipv4.dhcp.ranges: '{{ lxd_project_network_part }}.100-{{ lxd_project_network_part }}.254'
     ipv4.dhcp.expiry: 5m
     ipv4.nat: "false"
     ipv6.address: none
     dns.mode: managed
-    dns.domain: lxd-dmz
-- name: lxd-fe
-  description: "Frontend Network"
-  type: bridge
-  managed: true
-  config:
-    ipv4.address: '{{ lxd_frontend_network_part }}.1/24'
-    ipv4.dhcp.ranges: '{{ lxd_frontend_network_part }}.100-{{ lxd_frontend_network_part }}.254'
-    ipv4.dhcp.expiry: 5m
-    ipv4.nat: "false"
-    ipv6.address: none
-    dns.mode: managed
-    dns.domain: lxd-fe
-- name: lxd-be
-  description: "Backend Network"
-  type: bridge
-  managed: true
-  config:
-    ipv4.address: '{{ lxd_backend_network_part }}.1/24'
-    ipv4.dhcp.ranges: '{{ lxd_backend_network_part }}.100-{{ lxd_backend_network_part }}.254'
-    ipv4.dhcp.expiry: 5m
-    ipv4.nat: "false"
-    ipv6.address: none
-    dns.mode: managed
-    dns.domain: lxd-be
+    dns.domain: lxd-{{ project_name }}
 
 # Profiles
 profiles:
