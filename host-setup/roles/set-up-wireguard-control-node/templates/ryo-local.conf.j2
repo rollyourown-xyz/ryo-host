@@ -10,5 +10,5 @@ Address = {{ wireguard_address_network_part }}.1/32
 [Peer]
 PublicKey = {{ generated_host_public_key.stdout }}
 PresharedKey = {{ generated_preshared_key.stdout }}
-AllowedIPs = {{ wireguard_address_network_part }}.2/32,{{ [ lxd_br0_network_part, ".0/24"] | join('') }},{{ [ lxd_dmz_network_part, ".0/24"] | join('') }},{{ [ lxd_frontend_network_part, ".0/24"] | join('') }},{{ [ lxd_backend_network_part, ".0/24"] | join('') }}
+AllowedIPs = {{ wireguard_address_network_part }}.2/32,{{ [ lxd_br0_network_part, ".0/24"] | join('') }},{{ [ lxd_project_network_part, ".0/24"] | join('') }}
 Endpoint = {{ host_public_ip }}:{{ host_wireguard_port }}
