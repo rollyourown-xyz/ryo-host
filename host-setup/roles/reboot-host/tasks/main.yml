@@ -17,7 +17,7 @@
     ansible_ssh_port: "{{ host_new_ssh_port }}"
   when: changes_made is changed
 
-- name: Wait 10 seconds and then check the server is restarted
+- name: Wait for host server to reboot
   wait_for_connection:
     delay: 10
     sleep: 2

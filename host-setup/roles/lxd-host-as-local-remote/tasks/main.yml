@@ -1,5 +1,5 @@
 ---
-- name: Remove host as LXD remote on local machine if already present
+- name: ERROR CAN BE IGNORED Remove host as LXD remote on local machine if already present
   shell:
     cmd: 'lxc remote remove {{ project_id }}'
   become: yes
