@@ -26,7 +26,7 @@ networks:
     ipv4.nat: "true"
     ipv6.address: none
     dns.mode: managed
-    dns.domain: lxd
+    dns.domain: lxdbr0
 - name: {{ project_id }}
   description: "{{ project_id }} network"
   type: bridge
