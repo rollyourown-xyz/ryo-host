@@ -3,7 +3,7 @@ echo -n "DNS setup started"
 
 sudo lxc network list
 
-sudo resolvectl dns lxd-{{ project_name }} '{{ lxd_project_network_part }}.1'
-sudo resolvectl domain lxd-{{ project_name }} '~lxd-{{ project_name }}'
+sudo resolvectl dns lxd-{{ project_id }} '{{ lxd_project_network_part }}.1'
+sudo resolvectl domain lxd-{{ project_id }} '~lxd-{{ project_id }}'
 
 echo "DNS setup completed"

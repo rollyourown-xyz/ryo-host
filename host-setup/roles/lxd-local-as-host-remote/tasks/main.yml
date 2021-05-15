@@ -9,10 +9,10 @@
 
 - name: Clear any previous LXD certificates on local machine
   file:
-    path: "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ project_name }}.pem"
+    path: "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ project_id }}.pem"
     state: absent
   with_items:
-    - "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ project_name }}.pem"
+    - "/home/{{ local_non_root_user }}/.config/lxc/servercerts/{{ project_id }}.pem"
     - /var/snap/lxd/common/lxd/server.crt
     - /var/snap/lxd/common/lxd/server.key
 

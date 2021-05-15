@@ -27,8 +27,8 @@ networks:
     ipv6.address: none
     dns.mode: managed
     dns.domain: lxd
-- name: lxd-{{ project_name }}
-  description: "{{ project_name }} network"
+- name: lxd-{{ project_id }}
+  description: "{{ project_id }} network"
   type: bridge
   managed: true
   config:
@@ -38,7 +38,7 @@ networks:
     ipv4.nat: "false"
     ipv6.address: none
     dns.mode: managed
-    dns.domain: lxd-{{ project_name }}
+    dns.domain: lxd-{{ project_id }}
 
 # Profiles
 profiles:

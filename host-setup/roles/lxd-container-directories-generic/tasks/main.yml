@@ -18,6 +18,6 @@
 
 - name: Create a directory for container mounts for this project
   file:
-    path: "/var/containers/{{ project_name }}"
+    path: "/var/containers/{{ project_id }}"
     state: directory
     mode: '0755'
