@@ -37,7 +37,6 @@
     group: root
     dest: "{{ playbook_dir }}/../../../configuration/{{ project_id }}.conf"
     src: ryo-host.conf.j2
-    force: yes
 
 
 - name: Create local wireguard configuration file
@@ -47,7 +46,6 @@
     group: root
     dest: "/etc/wireguard/{{ project_id }}.conf"
     src: ryo-local.conf.j2
-    force: yes
 
 
 - name: Enable wireguard interface {{ project_id }} as service
