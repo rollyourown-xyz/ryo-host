@@ -22,6 +22,15 @@
 
 ## Add remotes configuration file on control node
 
+## Ensure the local non-root user lxd configuration directory in present
+
+- name: Ensure the local non-root user lxd configuration directory in present
+  file:
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/"
+    state: directory
+
 - name: Add remotes configuration on control node
   template:
     mode: 0664

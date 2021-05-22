@@ -22,6 +22,15 @@
 
 ## Add remotes configuration file on project host
 
+## Ensure the host non-root user lxd configuration directory in present
+
+- name: Ensure the host non-root user lxd configuration directory in present
+  file:
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    path: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/"
+    state: directory
+
 - name: Copy remotes configuration on project host
   template:
     mode: 0664
