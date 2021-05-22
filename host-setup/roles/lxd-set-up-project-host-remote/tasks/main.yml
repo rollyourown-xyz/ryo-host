@@ -1,0 +1,101 @@
+---
+
+## Add the control node CA cert as trusted
+
+- name: Ensure certs directory exists
+  file:
+    path: /usr/local/share/ca-certificates
+    state: directory
+
+- name: Install CA certificate to certs directory
+  copy:
+    mode: 664
+    owner: root
+    group: root
+    dest: "/usr/local/share/ca-certificates/control-node-ca.crt"
+    src: "/root/ca/ca.crt"
+
+- name: Update certificate index
+  shell:
+    cmd: /usr/sbin/update-ca-certificates
+  become: yes
+  become_user: "{{ host_non_root_user }}"
+
+
+## Add remotes configuration file on project host
+
+- name: Copy remotes configuration on project host
+  template:
+    mode: 664
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/config.yml"
+    src: config.yml.j2
+
+
+## Add project host client certificate and key
+
+- name: Copy project host client certificate
+  copy:
+    mode: 664
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.crt"
+    src: "/root/ca/{{project_id}}-client.crt"
+
+- name: Copy project host client private key
+  copy:
+    mode: 600
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.key"
+    src: "/root/ca/{{project_id}}-client.pem"
+
+
+## Add control node server certificate
+
+- name: Copy control node server certificate
+  copy:
+    mode: 664
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/servercerts/{{ project_id }}.crt"
+    src: /root/ca/control-node-server.crt
+
+
+## Add project host server certificate and key
+
+- name: Copy project host server certificate
+  copy:
+    mode: 644
+    owner: root
+    group: root
+    dest: "/var/snap/lxd/common/lxd/server.crt"
+    src: "/root/ca/{{project_id}}-server.crt"
+
+- name: Copy project host server private key
+  copy:
+    mode: 600
+    owner: root
+    group: root
+    dest: "/var/snap/lxd/common/lxd/server.key"
+    src: "/root/ca/{{project_id}}-server.pem"
+
+
+## Enable PKI mode
+
+- name: Create empty client.ca file
+  copy:
+    mode: 664
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.ca"
+    content: ""
+
+- name: Create empty server.ca file
+  copy:
+    mode: 664
+    owner: root
+    group: root
+    dest: "/var/snap/lxd/common/lxd/server.ca"
+    content: ""

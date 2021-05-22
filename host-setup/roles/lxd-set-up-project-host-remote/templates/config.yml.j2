@@ -1,0 +1,16 @@
+default-remote: local
+remotes:
+  control:
+    addr: https://{{ wireguard_address_network_part }}.1:8443
+    auth_type: tls
+    project: default
+    protocol: lxd
+    public: false
+  images:
+    addr: https://images.linuxcontainers.org
+    protocol: simplestreams
+    public: true
+  local:
+    addr: unix://
+    public: false
+aliases: {}
