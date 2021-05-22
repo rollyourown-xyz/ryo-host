@@ -5,18 +5,18 @@
 # Generate a control node LXD server private key
 - name: Generate a control node LXD server private key
   openssl_privatekey:
-    owner: root
-    group: root
-    path: /root/ca/control-node-server.pem
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.key"
     state: present
   register: cn_server_privatekey
 
 # Generate a CSR for the control node LXD server
 - name: Generate a CSR for the control node LXD server
   openssl_csr:
-    owner: root
-    group: root
-    path: /root/ca/control-node-server.csr
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.csr"
     privatekey_path: "{{ cn_server_privatekey.filename }}"
     common_name: "rollyourown.xyz Control Node"
     organization_name: "rollyourown.xyz Control Node"
@@ -27,30 +27,30 @@
 # Sign the control node LXD server CSR with the CA certificate and key
 - name: Sign the control node LXD server CSR with the CA certificate and key
   openssl_certificate:
-    owner: root
-    group: root
-    path: /root/ca/control-node-server.crt
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.crt"
     csr_path: "{{ cn_server_csr.filename }}"
     provider: ownca
-    ownca_path: /root/ca/ca.crt
-    ownca_privatekey_path: /root/ca/ca.pem
+    ownca_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
+    ownca_privatekey_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.key"
     state: present
 
 # Generate a control node LXD client private key
 - name: Generate a control node LXD client private key
   openssl_privatekey:
-    owner: root
-    group: root
-    path: /root/ca/control-node-client.pem
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-client.key"
     state: present
   register: cn_client_privatekey
 
 # Generate a CSR for the control node LXD client
 - name: Generate a CSR for the control node LXD client
   openssl_csr:
-    owner: root
-    group: root
-    path: /root/ca/control-node-client.csr
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-client.csr"
     privatekey_path: "{{ cn_client_privatekey.filename }}"
     common_name: "rollyourown.xyz Control Node"
     organization_name: "rollyourown.xyz Control Node"
@@ -61,13 +61,13 @@
 # Sign the control node LXD client CSR with the CA certificate and key
 - name: Sign the control node LXD client CSR with the CA certificate and key
   openssl_certificate:
-    owner: root
-    group: root
-    path: /root/ca/control-node-client.crt
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-client.crt"
     csr_path: "{{ cn_client_csr.filename }}"
     provider: ownca
-    ownca_path: /root/ca/ca.crt
-    ownca_privatekey_path: /root/ca/ca.pem
+    ownca_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
+    ownca_privatekey_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.key"
     state: present
 
 
@@ -76,18 +76,18 @@
 # Generate a {{project_id}} LXD server private key
 - name: Generate a {{project_id}} LXD server private key
   openssl_privatekey:
-    owner: root
-    group: root
-    path: "/root/ca/{{project_id}}-server.pem"
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-server.key"
     state: present
   register: ph_server_privatekey
 
 # Generate a CSR for the {{project_id}} LXD server
 - name: Generate a CSR for the {{project_id}} LXD server
   openssl_csr:
-    owner: root
-    group: root
-    path: /root/ca/{{project_id}}-server.csr
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-server.csr"
     privatekey_path: "{{ ph_server_privatekey.filename }}"
     common_name: "rollyourown.xyz {{project_id}} Host"
     organization_name: "rollyourown.xyz {{project_id}} Host"
@@ -98,30 +98,30 @@
 # Sign the {{project_id}} LXD server CSR with the CA certificate and key
 - name: Sign the {{project_id}} LXD server CSR with the CA certificate and key
   openssl_certificate:
-    owner: root
-    group: root
-    path: "/root/ca/{{project_id}}-server.crt"
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-server.crt"
     csr_path: "{{ ph_server_csr.filename }}"
     provider: ownca
-    ownca_path: /root/ca/ca.crt
-    ownca_privatekey_path: /root/ca/ca.pem
+    ownca_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
+    ownca_privatekey_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.key"
     state: present
 
 # Generate a {{project_id}} LXD client private key
 - name: Generate a {{project_id}} LXD client private key
   openssl_privatekey:
-    owner: root
-    group: root
-    path: "/root/ca/{{project_id}}-client.pem"
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-client.key"
     state: present
   register: ph_client_privatekey
 
 # Generate a CSR for the {{project_id}} LXD client
 - name: Generate a CSR for the {{project_id}} LXD client
   openssl_csr:
-    owner: root
-    group: root
-    path: "/root/ca/{{project_id}}-client.csr"
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-client.csr"
     privatekey_path: "{{ ph_client_privatekey.filename }}"
     common_name: "rollyourown.xyz {{project_id}} Host"
     organization_name: "rollyourown.xyz {{project_id}} Host"
@@ -132,11 +132,11 @@
 # Sign the {{project_id}} LXD client CSR with the CA certificate and key
 - name: Sign the {{project_id}} LXD client CSR with the CA certificate and key
   openssl_certificate:
-    owner: root
-    group: root
-    path: "/root/ca/{{project_id}}-client.crt"
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
+    path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-client.crt"
     csr_path: "{{ ph_client_csr.filename }}"
     provider: ownca
-    ownca_path: /root/ca/ca.crt
-    ownca_privatekey_path: /root/ca/ca.pem
+    ownca_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
+    ownca_privatekey_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.key"
     state: present
