@@ -33,6 +33,7 @@
     path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.crt"
     csr_path: "{{ cn_server_csr.filename }}"
     provider: ownca
+    ownca_create_subject_key_identifier: always_create
     ownca_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
     ownca_privatekey_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.key"
     state: present
@@ -67,6 +68,7 @@
     path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-client.crt"
     csr_path: "{{ cn_client_csr.filename }}"
     provider: ownca
+    ownca_create_subject_key_identifier: always_create
     ownca_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
     ownca_privatekey_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.key"
     state: present
@@ -105,6 +107,7 @@
     path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-server.crt"
     csr_path: "{{ ph_server_csr.filename }}"
     provider: ownca
+    ownca_create_subject_key_identifier: always_create
     ownca_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
     ownca_privatekey_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.key"
     state: present
@@ -139,6 +142,7 @@
     path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-client.crt"
     csr_path: "{{ ph_client_csr.filename }}"
     provider: ownca
+    ownca_create_subject_key_identifier: always_create
     ownca_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
     ownca_privatekey_path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.key"
     state: present
