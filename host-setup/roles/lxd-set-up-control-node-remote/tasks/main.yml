@@ -22,9 +22,9 @@
 
 ## Add remotes configuration file on control node
 
-## Ensure the local non-root user lxd configuration directory in present
+## Ensure the local non-root user lxd configuration directory is present
 
-- name: Ensure the local non-root user lxd configuration directory in present
+- name: Ensure the local non-root user lxd configuration directory is present
   file:
     owner: "{{ local_non_root_user }}"
     group: "{{ local_non_root_user }}"
@@ -63,8 +63,8 @@
 
 - name: Ensure servercerts directory exists
   file:
-    owner: "{{ host_non_root_user }}"
-    group: "{{ host_non_root_user }}"
+    owner: "{{ local_non_root_user }}"
+    group: "{{ local_non_root_user }}"
     path: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/servercerts"
     state: directory
 
@@ -96,7 +96,25 @@
     src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.key"
 
 
-## Enable PKI mode
+## Enable PKI mode: copy CA certificate to client and server configuration
+
+- name: Copy CA certificate to control node server configuration
+  copy:
+    mode: 0644
+    owner: root
+    group: root
+    dest: "/var/snap/lxd/common/lxd/server.ca"
+    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
+
+- name: Copy CA certificate to control node client configuration
+  copy:
+    mode: 0644
+    owner: root
+    group: root
+    dest: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/client.ca"
+    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
+
+
 
 # - name: Create empty client.ca file
 #   copy:
