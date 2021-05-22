@@ -98,18 +98,18 @@
 
 ## Enable PKI mode
 
-- name: Create empty client.ca file
-  copy:
-    mode: 0664
-    owner: "{{ local_non_root_user }}"
-    group: "{{ local_non_root_user }}"
-    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.ca"
-    content: ""
+# - name: Create empty client.ca file
+#   copy:
+#     mode: 0664
+#     owner: "{{ local_non_root_user }}"
+#     group: "{{ local_non_root_user }}"
+#     dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.ca"
+#     content: ""
 
-- name: Create empty server.ca file
-  copy:
-    mode: 0664
-    owner: root
-    group: root
-    dest: "/var/snap/lxd/common/lxd/server.ca"
-    content: ""
+# - name: Create empty server.ca file
+#   copy:
+#     mode: 0664
+#     owner: root
+#     group: root
+#     dest: "/var/snap/lxd/common/lxd/server.ca"
+#     content: ""

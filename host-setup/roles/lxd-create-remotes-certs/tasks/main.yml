@@ -18,7 +18,8 @@
     group: "{{ local_non_root_user }}"
     path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.csr"
     privatekey_path: "{{ cn_server_privatekey.filename }}"
-    common_name: "rollyourown.xyz Control Node"
+    common_name: "control.ryo-project"
+    subject_alt_name: "IP:{{ wireguard_address_network_part }}.1"
     organization_name: "rollyourown.xyz Control Node"
     organizational_unit_name: "Control Node"
     state: present
@@ -52,7 +53,7 @@
     group: "{{ local_non_root_user }}"
     path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-client.csr"
     privatekey_path: "{{ cn_client_privatekey.filename }}"
-    common_name: "rollyourown.xyz Control Node"
+    common_name: "control.ryo-project"
     organization_name: "rollyourown.xyz Control Node"
     organizational_unit_name: "Control Node"
     state: present
@@ -89,7 +90,8 @@
     group: "{{ local_non_root_user }}"
     path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-server.csr"
     privatekey_path: "{{ ph_server_privatekey.filename }}"
-    common_name: "rollyourown.xyz {{project_id}} Host"
+    common_name: "{{project_id}}.ryo-project"
+    subject_alt_name: "IP:{{ wireguard_address_network_part }}.2"
     organization_name: "rollyourown.xyz {{project_id}} Host"
     organizational_unit_name: "{{project_id}} Host"
     state: present
@@ -123,7 +125,7 @@
     group: "{{ local_non_root_user }}"
     path: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-client.csr"
     privatekey_path: "{{ ph_client_privatekey.filename }}"
-    common_name: "rollyourown.xyz {{project_id}} Host"
+    common_name: "{{project_id}}.ryo-project"
     organization_name: "rollyourown.xyz {{project_id}} Host"
     organizational_unit_name: "{{project_id}} Host"
     state: present
