@@ -44,12 +44,12 @@
     path: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/config.yml"
     insertafter: "^remotes:"
     block: |2
-      {{ project_id }}:
-        addr: https://{{ wireguard_address_network_part }}.2:8443
-        auth_type: tls
-        project: default
-        protocol: lxd
-        public: false
+        {{ project_id }}:
+          addr: https://{{ wireguard_address_network_part }}.2:8443
+          auth_type: tls
+          project: default
+          protocol: lxd
+          public: false
     marker: "  # {mark} ANSIBLE MANAGED BLOCK for {{ project_id }}"
 
 ## Add control node client certificate and key
