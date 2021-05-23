@@ -117,8 +117,8 @@
 
 ## Add the project host as LXD trusted TLS client for the control node
 
-- name: Add project host as LXD trusted TLS client for the control node
-  shell:
-    cmd: 'lxc config trust add {{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-client.crt'
-  become: yes
-  become_user: "{{ local_non_root_user }}"
+# - name: Add project host as LXD trusted TLS client for the control node
+#   shell:
+#     cmd: 'lxc config trust add {{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-client.crt'
+#   become: yes
+#   become_user: "{{ local_non_root_user }}"

@@ -24,20 +24,20 @@
 
 ## Ensure the host non-root user lxd configuration directory is present
 
-- name: Ensure the host non-root user lxd configuration directory is present
-  file:
-    owner: "{{ host_non_root_user }}"
-    group: "{{ host_non_root_user }}"
-    path: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/"
-    state: directory
+# - name: Ensure the host non-root user lxd configuration directory is present
+#   file:
+#     owner: "{{ host_non_root_user }}"
+#     group: "{{ host_non_root_user }}"
+#     path: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/"
+#     state: directory
 
-- name: Copy remotes configuration on project host
-  template:
-    mode: 0664
-    owner: "{{ host_non_root_user }}"
-    group: "{{ host_non_root_user }}"
-    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/config.yml"
-    src: config.yml.j2
+# - name: Copy remotes configuration on project host
+#   template:
+#     mode: 0664
+#     owner: "{{ host_non_root_user }}"
+#     group: "{{ host_non_root_user }}"
+#     dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/config.yml"
+#     src: config.yml.j2
 
 
 ## Add project host client certificate and key
@@ -61,20 +61,20 @@
 
 ## Add control node server certificate
 
-- name: Ensure servercerts directory exists
-  file:
-    owner: "{{ host_non_root_user }}"
-    group: "{{ host_non_root_user }}"
-    path: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/servercerts"
-    state: directory
+# - name: Ensure servercerts directory exists
+#   file:
+#     owner: "{{ host_non_root_user }}"
+#     group: "{{ host_non_root_user }}"
+#     path: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/servercerts"
+#     state: directory
 
-- name: Copy control node server certificate
-  copy:
-    mode: 0664
-    owner: "{{ host_non_root_user }}"
-    group: "{{ host_non_root_user }}"
-    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/servercerts/control-node-server.crt"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.crt"
+# - name: Copy control node server certificate
+#   copy:
+#     mode: 0664
+#     owner: "{{ host_non_root_user }}"
+#     group: "{{ host_non_root_user }}"
+#     dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/servercerts/control-node-server.crt"
+#     src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.crt"
 
 
 ## Add project host server certificate and key

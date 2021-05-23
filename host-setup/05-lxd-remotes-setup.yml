@@ -16,7 +16,7 @@
     - role: lxd-set-up-control-node-remote
 
 
-- name: Add local control node as LXD remote on host
+- name: Set up project host as control node LXD remote
   hosts: host_wireguard_ip
   
   vars_files:
