@@ -42,7 +42,7 @@
 - name: Add remotes configuration in control node remotes config file
   blockinfile:
     path: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/config.yml"
-    insertafter: 'remotes:'
+    insertafter: "^remotes:"
     block: |2
       {{ project_id }}:
         addr: https://{{ wireguard_address_network_part }}.2:8443
