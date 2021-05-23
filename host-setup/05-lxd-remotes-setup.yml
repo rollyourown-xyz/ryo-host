@@ -14,7 +14,6 @@
   
   roles:
     - role: lxd-create-remotes-certs
-    #- role: lxd-host-as-local-remote
     - role: lxd-set-up-control-node-remote
 
 
@@ -37,5 +36,5 @@
     transfer_method: scp  
   
   roles:
-    #- role: lxd-local-as-host-remote
     - role: lxd-set-up-project-host-remote
+    - role: reboot-host
