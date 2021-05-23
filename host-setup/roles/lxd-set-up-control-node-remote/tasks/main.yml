@@ -31,14 +31,6 @@
     path: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/"
     state: directory
 
-# - name: Add remotes configuration on control node
-#   template:
-#     mode: 0664
-#     owner: "{{ local_non_root_user }}"
-#     group: "{{ local_non_root_user }}"
-#     dest: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/config.yml"
-#     src: config.yml.j2
-
 - name: Add remotes configuration in control node remotes config file
   blockinfile:
     path: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/config.yml"
@@ -51,6 +43,7 @@
           protocol: lxd
           public: false
     marker: "  # {mark} ANSIBLE MANAGED BLOCK for {{ project_id }}"
+
 
 ## Add control node client certificate and key
 
@@ -125,12 +118,3 @@
     group: root
     dest: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/client.ca"
     src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
-
-
-## Add the project host as LXD trusted TLS client for the control node
-
-# - name: Add project host as LXD trusted TLS client for the control node
-#   shell:
-#     cmd: 'lxc config trust add {{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-client.crt'
-#   become: yes
-#   become_user: "{{ local_non_root_user }}"
