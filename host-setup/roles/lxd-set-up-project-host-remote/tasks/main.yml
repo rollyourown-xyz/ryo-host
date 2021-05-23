@@ -115,18 +115,18 @@
     src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
 
 
-# - name: Create empty client.ca file
-#   copy:
-#     mode: 0664
-#     owner: "{{ host_non_root_user }}"
-#     group: "{{ host_non_root_user }}"
-#     dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.ca"
-#     content: ""
+## Add the control node as LXD trusted TLS client for the project host
 
-# - name: Create empty server.ca file
-#   copy:
-#     mode: 0664
-#     owner: root
-#     group: root
-#     dest: "/var/snap/lxd/common/lxd/server.ca"
-#     content: ""
+- name: Copy control node client certificate to the project host
+  copy:
+    mode: 0644
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: "/home/{{ host_non_root_user }}/control-node-client.crt"
+    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-client.crt"
+
+- name: Add the control node as LXD trusted TLS client for the project host
+  shell:
+    cmd: 'lxc config trust add /home/{{ host_non_root_user }}/control-node-client.crt'
+  become: yes
+  become_user: "{{ host_non_root_user }}"
