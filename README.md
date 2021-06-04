@@ -1,3 +1,3 @@
-# ryo-host-setup-generic
+# ryo-host
 
 Repository for playbooks for generic setup of a rollyourown.xyz project host.
