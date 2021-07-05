@@ -1,6 +1,4 @@
 ---
-# The firewall rules script is project-specific and opens only the necessary ports for the project
-#
 - name: Copy firewall rules script (making executable)
   template:
     mode: 0770
