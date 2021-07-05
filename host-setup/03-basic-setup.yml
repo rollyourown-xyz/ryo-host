@@ -22,7 +22,6 @@
     - role: set-hostname
     - role: install-basic-packages
     - role: enable-ipv4-packet-forwarding
-    - role: set-up-veth0
     - role: set-up-ssh
     - role: firewall-setup
     - role: reboot-host
