@@ -35,7 +35,7 @@
     mode: 644
     owner: root
     group: root
-    dest: "{{ playbook_dir }}/../../../configuration/{{ project_id }}.conf"
+    dest: "{{ playbook_dir }}/../configuration/{{ host_id }}.conf"
     src: ryo-host.conf.j2
 
 
@@ -44,12 +44,12 @@
     mode: 640
     owner: root
     group: root
-    dest: "/etc/wireguard/{{ project_id }}.conf"
+    dest: "/etc/wireguard/{{ host_id }}.conf"
     src: ryo-local.conf.j2
 
 
-- name: Enable wireguard interface {{ project_id }} as service
+- name: Enable wireguard interface {{ host_id }} as service
   service:
-    name: "wg-quick@{{ project_id }}"
+    name: "wg-quick@{{ host_id }}"
     enabled: yes
     state: restarted
