@@ -1,25 +1,5 @@
 ---
 
-## Add the control node CA cert as trusted
-
-- name: Ensure certs directory exists
-  file:
-    path: /usr/local/share/ca-certificates
-    state: directory
-
-- name: Install CA certificate to certs directory
-  copy:
-    mode: 0664
-    owner: root
-    group: root
-    dest: "/usr/local/share/ca-certificates/control-node-ca.crt"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
-
-- name: Update certificate index
-  shell:
-    cmd: /usr/sbin/update-ca-certificates
-
-
 ## Add remotes configuration file on control node
 
 ## Ensure the local non-root user lxd configuration directory is present
@@ -36,32 +16,13 @@
     path: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/config.yml"
     insertafter: "^remotes:"
     block: |2
-        {{ project_id }}:
+        {{ host_id }}:
           addr: https://{{ wireguard_address_network_part }}.2:8443
           auth_type: tls
           project: default
           protocol: lxd
           public: false
-    marker: "  # {mark} ANSIBLE MANAGED BLOCK for {{ project_id }}"
-
-
-## Add control node client certificate and key
-
-- name: Copy control node client certificate
-  copy:
-    mode: 0664
-    owner: "{{ local_non_root_user }}"
-    group: "{{ local_non_root_user }}"
-    dest: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/client.crt"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-client.crt"
-
-- name: Copy control node client private key
-  copy:
-    mode: 0600
-    owner: "{{ local_non_root_user }}"
-    group: "{{ local_non_root_user }}"
-    dest: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/client.key"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-client.key"
+    marker: "  # {mark} ANSIBLE MANAGED BLOCK for {{ host_id }}"
 
 
 ## Add project host server certificate
@@ -78,43 +39,5 @@
     mode: 0664
     owner: "{{ local_non_root_user }}"
     group: "{{ local_non_root_user }}"
-    dest: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/servercerts/{{ project_id }}.crt"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/{{project_id}}-server.crt"
-
-
-## Add control node server certificate and key
-
-- name: Copy control node server certificate
-  copy:
-    mode: 0644
-    owner: root
-    group: root
-    dest: "/var/snap/lxd/common/lxd/server.crt"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.crt"
-
-- name: Copy control node server private key
-  copy:
-    mode: 0600
-    owner: root
-    group: root
-    dest: "/var/snap/lxd/common/lxd/server.key"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/control-node-server.key"
-
-
-## Enable PKI mode: copy CA certificate to client and server configuration
-
-- name: Copy CA certificate to control node server configuration
-  copy:
-    mode: 0644
-    owner: root
-    group: root
-    dest: "/var/snap/lxd/common/lxd/server.ca"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
-
-- name: Copy CA certificate to control node client configuration
-  copy:
-    mode: 0644
-    owner: root
-    group: root
-    dest: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/client.ca"
-    src: "{{ playbook_dir }}/../../../../ryo-control-node/configuration/ca/ca.crt"
+    dest: "/home/{{ local_non_root_user }}/snap/lxd/current/.config/lxc/servercerts/{{ host_id }}.crt"
+    src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-server.crt"
