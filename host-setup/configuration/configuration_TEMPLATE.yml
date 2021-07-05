@@ -1,0 +1,76 @@
+## WARNING: After adding configuration, never push this file, with secrets, 
+# to a repository or publish in any other way!
+
+
+#----------------------------
+# REQUIRED Host Configuration
+#----------------------------
+
+# Basic host configuration
+#-------------------------
+
+# Add the public IPv4 address of your host server here. 
+# !! Make sure this is the same as configured in the inventory file
+host_public_ip: <IP ADDRESS>
+
+# Set the default SSH port, as provided by your server hosting provider
+host_initial_ssh_port: 22
+
+# Set the default root username here (probably 'root'), as provided by 
+# your server hosting provider
+host_root_user: root
+
+# Set the default root password here, as provided by your server 
+# hosting provider
+host_root_password: <INITIAL PASSWORD>
+
+# Define a non-root username
+host_non_root_user: <USER_NAME>
+
+# SECRET: Set a strong user password here. 
+host_non_root_user_password: <PASSWORD>
+
+
+#----------------------------------------------------------------------------
+# DEFAULT Configuration - leave as default unless you know what you are doing
+#----------------------------------------------------------------------------
+
+# Host SSH configuration
+#-----------------------
+
+# Leave as default or change according to preference
+host_new_ssh_port: 2222
+
+
+# Host wireguard configuration
+#-----------------------------
+
+# Leave as default or change according to preference
+host_wireguard_port: 52222
+
+# Leave the following settings as default if this is the first host managed
+# by the control node. Change if other hosts are already configured on the control node
+# Make sure that these settings do not overlap with any other host - e.g. if
+# other hosts managed by the control node use "10.0.1"  and "10.0.2", then
+# set this to "10.0.3" and also change the network part for [host_wireguard_ip]
+# in the host inventory file
+# !! Make sure that the network part for [host_wireguard_ip] in the inventory file
+# !! is consistent with this parameter
+wireguard_address_network_part: "10.0.1"
+
+
+# Host LXD configuration
+#-----------------------------
+
+# Leave the following settings as default if this is the first host managed
+# by the control node. Change if other hosts are already configured on the control node
+# Make sure that these settings do not overlap with any other host LXD networks
+# For example, if other hosts managed by the control node use "10.10.0"/"10.10.10" 
+# and "10.10.1"/"10.10.11", then set these to "10.10.3"/"10.10.13"
+lxd_br0_network_part: "10.10.0"
+lxd_host_network_part: "10.10.10"
+
+# Change according to the available storage on the host. 
+# Set to leave at least 4GB for the operating system.
+lxd_storage_pool_size: 40GB
+

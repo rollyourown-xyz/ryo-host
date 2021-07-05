@@ -1,0 +1,18 @@
+# Add the public IPv4 address of your host server here
+# !! Make sure this is the same as configured for the host_public_ip
+# !! variable in the configuration.yml file
+[host_public_ip]
+<IP ADDRESS>
+
+# Leave the following setting as default if this is the first host managed
+# by the control node. Change if other hosts are already configured on the control node
+# E.g. if other hosts managed by the control node use "10.0.1.2" and "10.0.2.2", then
+# set this to "10.0.3.2"
+# !! Make sure that this is consistent with the parameter wireguard_address_network_part
+# !! in the configuration.yml file
+[host_wireguard_ip] 
+10.0.1.2
+
+# DO NOT CHANGE, DO NOT REMOVE
+[local]
+127.0.0.1   ansible_connection=local    ansible_python_interpreter="{{ansible_playbook_python}}"
