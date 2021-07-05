@@ -5,7 +5,7 @@
     owner: root
     group: root
     dest: /etc/wireguard/wg0.conf
-    src: "{{ playbook_dir }}/../../../configuration/{{ project_id }}.conf"
+    src: "{{ playbook_dir }}/../configuration/{{ host_id }}.conf"
     force: yes
   register: changes_made
 
