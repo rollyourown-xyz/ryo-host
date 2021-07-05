@@ -2,6 +2,6 @@
 echo -n "DNS setup started"
 
 /usr/bin/systemd-resolve --interface lxdbr0 --revert
-/usr/bin/systemd-resolve --interface {{ project_id }} --revert
+/usr/bin/systemd-resolve --interface {{ host_id }} --revert
 
 echo "DNS setup completed"
