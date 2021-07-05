@@ -11,4 +11,3 @@
     state: present
     reload: yes
   register: changes_made
-  when: host_ipv4_packet_forwarding
