@@ -1,5 +1,5 @@
 ---
-- name: Add project host as LXD remote on local control node
+- name: Add host as LXD remote on control node
   hosts: local
   
   vars_files:
@@ -14,11 +14,11 @@
     ansible_become_password: "{{ local_non_root_user_password }}"
   
   roles:
-    - role: lxd-create-remotes-certs
+    - role: lxd-create-host-remotes-certs
     - role: lxd-set-up-control-node-remote
 
 
-- name: Set up project host as control node LXD remote
+- name: Add control node as LXD remote on host 
   hosts: host_wireguard_ip
   
   vars_files:
