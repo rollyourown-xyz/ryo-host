@@ -34,7 +34,7 @@ $IPT -A INPUT -p tcp -m tcp --dport 8443 -s {{ wireguard_address_network_part }}
 
 ## Rules for LXD networks
 ## --------------------------------------------------------------------------------------------------------
-# Note: this provides NAT **to the internet** for LXD containers in LXD project network
+# Note: this provides NAT **to the internet** for LXD containers in LXD host network
 # without using ipv4.nat=true on the LXD network definition (which would also NAT **between** LXD networks)
 ## --------------------------------------------------------------------------------------------------------
 
