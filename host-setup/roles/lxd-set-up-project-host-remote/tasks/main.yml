@@ -28,7 +28,7 @@
     mode: 0664
     owner: "{{ host_non_root_user }}"
     group: "{{ host_non_root_user }}"
-    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.crt"
+    dest: "/home/{{ host_non_root_user }}/snap/lxd/common/config/client.crt"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-client.crt"
   register: changes_made
 
@@ -37,7 +37,7 @@
     mode: 0600
     owner: "{{ host_non_root_user }}"
     group: "{{ host_non_root_user }}"
-    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.key"
+    dest: "/home/{{ host_non_root_user }}/snap/lxd/common/config/client.key"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-client.key"
   register: changes_made
 
@@ -77,9 +77,9 @@
 - name: Copy CA certificate to control node client configuration
   copy:
     mode: 0644
-    owner: root
-    group: root
-    dest: "/home/{{ host_non_root_user }}/snap/lxd/current/.config/lxc/client.ca"
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    dest: "/home/{{ host_non_root_user }}/snap/lxd/common/config/client.ca"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/ca.crt"
   register: changes_made
 
