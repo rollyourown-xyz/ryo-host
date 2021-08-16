@@ -1,5 +1,5 @@
 ---
-- name: Set up LXD on the host
+- name: Initialise LXD on the host
   hosts: host_wireguard_ip
   
   vars_files:
