@@ -34,7 +34,7 @@ networks:
     ipv4.address: '{{ lxd_host_network_part }}.1/24'
     ipv4.dhcp.ranges: '{{ lxd_host_network_part }}.100-{{ lxd_host_network_part }}.254'
     ipv4.dhcp.expiry: 5m
-    ipv4.nat: "false"
+    ipv4.nat: "true"
     ipv6.address: none
     dns.mode: managed
     dns.domain: {{ host_id }}
