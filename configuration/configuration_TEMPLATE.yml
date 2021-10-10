@@ -65,10 +65,10 @@ wireguard_address_network_part: "10.0.1"
 # Leave the following settings as default if this is the first host managed
 # by the control node. Change if other hosts are already configured on the control node
 # Make sure that these settings do not overlap with any other host LXD networks
-# For example, if other hosts managed by the control node use "10.10.0"/"10.10.10" 
-# and "10.10.1"/"10.10.11", then set these to "10.10.3"/"10.10.13"
-lxd_br0_network_part: "10.10.0"
-lxd_host_network_part: "10.10.10"
+# For example, if other hosts managed by the control node use "10.10.1"/"10.10.11" 
+# and "10.10.2"/"10.10.12", then set these to "10.10.3"/"10.10.13"
+lxd_br0_network_part: "10.10.1"
+lxd_host_network_part: "10.10.11"
 
 # Change according to the available storage on the host. 
 # Set to leave at least 4GB for the operating system.
