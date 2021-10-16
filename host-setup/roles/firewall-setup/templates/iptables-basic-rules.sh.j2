@@ -32,6 +32,13 @@ $IPT -A INPUT -p udp -m udp --dport {{ host_wireguard_port }} -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp --dport 8443 -s {{ wireguard_address_network_part }}.0/24 -d {{ wireguard_address_network_part }}.2/32 -j ACCEPT
 
 
+## Map DNS port 53 to Consul listening port
+###########################################
+
+$IPT -t nat -A OUTPUT -d localhost -p udp -m udp --dport 53 -j REDIRECT --to-ports 8600
+$IPT -t nat -A OUTPUT -d localhost -p tcp -m tcp --dport 53 -j REDIRECT --to-ports 8600
+
+
 ## Rules for LXD networks
 ## --------------------------------------------------------------------------------------------------------
 # Note: this provides NAT **to the internet** for LXD containers in LXD host network
