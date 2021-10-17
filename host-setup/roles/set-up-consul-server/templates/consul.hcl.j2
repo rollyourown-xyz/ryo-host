@@ -8,6 +8,8 @@ bind_addr             = "{{ lxd_host_network_part }}.1"
 advertise_addr        = "{{ lxd_host_network_part }}.1"
 advertise_addr_wan    = "{{ lxd_host_network_part }}.1"
 
+retry_join_wan = [ "{{ veth0_network_part }}.1" ]
+
 # ui_config.enabled = true only for dev/test, false for production
 ui_config = {
   enabled = true
