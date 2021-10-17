@@ -46,7 +46,8 @@ $IPT -t nat -A OUTPUT -d localhost -p tcp -m tcp --dport 53 -j REDIRECT --to-por
 $IPT -A INPUT -p udp -m udp -s {{ lxd_host_network_part }}.0/24 --dport 8600 -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp -s {{ lxd_host_network_part }}.0/24 --dport 8600 -j ACCEPT
 
-# Allow Consul HTTP API on TCP Port 8500 on wireguard network and LXD host network on LXD host network
+# Allow Consul HTTP API on TCP Port 8500 from control-node consul server, on wireguard network and LXD host network on LXD host network
+$IPT -A INPUT -p tcp -m tcp -s {{ veth0_network_part }}.1/24 --dport 8500 -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp -s {{ wireguard_address_network_part }}.0/24 --dport 8500 -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp -s {{ lxd_host_network_part }}.0/24 --dport 8500 -j ACCEPT
 
@@ -54,14 +55,14 @@ $IPT -A INPUT -p tcp -m tcp -s {{ lxd_host_network_part }}.0/24 --dport 8500 -j 
 $IPT -A INPUT -p udp -m udp -s {{ lxd_host_network_part }}.0/24 --dport 8301 -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp -s {{ lxd_host_network_part }}.0/24 --dport 8301 -j ACCEPT
 
-# Allow Consul WAN Serf on TCP and UDP Ports 8302 on wireguard network and LXD host network
-$IPT -A INPUT -p udp -m udp -s {{ wireguard_address_network_part }}.0/24 --dport 8302 -j ACCEPT
-$IPT -A INPUT -p tcp -m tcp -s {{ wireguard_address_network_part }}.0/24 --dport 8302 -j ACCEPT
+# Allow Consul WAN Serf on TCP and UDP Ports 8302 from control-node consul server and from LXD host network
+$IPT -A INPUT -p udp -m udp -s {{ veth0_network_part }}.1/24 --dport 8302 -j ACCEPT
+$IPT -A INPUT -p tcp -m tcp -s {{ veth0_network_part }}.1/24 --dport 8302 -j ACCEPT
 $IPT -A INPUT -p udp -m udp -s {{ lxd_host_network_part }}.0/24 --dport 8302 -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp -s {{ lxd_host_network_part }}.0/24 --dport 8302 -j ACCEPT
 
-# Allow Consul Server RCP on TCP Port 8300 on wireguard network and LXD host network
-$IPT -A INPUT -p tcp -m tcp -s {{ wireguard_address_network_part }}.0/24 --dport 8300 -j ACCEPT
+# Allow Consul Server RCP on TCP Port 8300 from control-node consul server and from LXD host network
+$IPT -A INPUT -p tcp -m tcp -s {{ veth0_network_part }}.1/24 --dport 8300 -j ACCEPT
 $IPT -A INPUT -p tcp -m tcp -s {{ lxd_host_network_part }}.0/24 --dport 8300 -j ACCEPT
 
 
