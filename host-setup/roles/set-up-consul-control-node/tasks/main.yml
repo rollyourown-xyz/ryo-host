@@ -6,9 +6,8 @@
   lineinfile:
     dest: /etc/consul.d/consul.hcl
     line: '"{{ lxd_host_network_part }}.1",'
-    state: present
     insertafter: '^retry_join_wan = ['
-    insertbefore: '^]'
+    state: present
 
 
 # Restart consul service on control-node
