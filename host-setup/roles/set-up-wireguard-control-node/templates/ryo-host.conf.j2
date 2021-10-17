@@ -11,4 +11,4 @@ ListenPort = {{ host_wireguard_port }}
 [Peer]
 PublicKey = {{ generated_local_public_key.stdout }}
 PresharedKey = {{ generated_preshared_key.stdout }}
-AllowedIPs = {{ wireguard_address_network_part }}.1/32
+AllowedIPs = {{ wireguard_address_network_part }}.1/32,{{ [ veth0_network_part, ".1/32"] | join('') }}
