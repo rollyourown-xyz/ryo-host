@@ -6,7 +6,7 @@
   lineinfile:
     dest: /etc/consul.d/consul.hcl
     line: '"{{ lxd_host_network_part }}.1",'
-    insertafter: '^retry_join_wan = ['
+    insertafter: '^retry_join_wan'
     state: present
 
 
