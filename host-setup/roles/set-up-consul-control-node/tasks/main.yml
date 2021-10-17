@@ -1,0 +1,19 @@
+---
+
+# Add entry for host consul server in consul retry_join_wan on control-node
+#
+- name: Add entry for host consul server in consul retry_join_wan
+  lineinfile:
+    dest: /etc/consul.d/consul.hcl
+    line: '"{{ lxd_host_network_part }}.1",'
+    state: present
+    insertafter: '^retry_join_wan = ['
+    insertbefore: '^]'
+
+
+# Restart consul service on control-node
+#
+- name: Restart consul service
+  service:
+    name: consul
+    state: restarted
