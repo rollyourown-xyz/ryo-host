@@ -6,8 +6,7 @@ bootstrap_expect      = 1
 client_addr           = "{{ lxd_host_network_part }}.1"   
 bind_addr             = "{{ lxd_host_network_part }}.1"
 advertise_addr        = "{{ lxd_host_network_part }}.1"
-advertise_addr_wan    = "{{ wireguard_address_network_part }}.2"
-retry_join_wan        = [ "{{ wireguard_address_network_part }}.1" ]
+advertise_addr_wan    = "{{ lxd_host_network_part }}.1"
 
 # ui_config.enabled = true only for dev/test, false for production
 ui_config = {
