@@ -60,4 +60,4 @@
   lineinfile:
     dest: /etc/systemd/resolved.conf
     regexp: '^#Domains='
-    line: "Domains=~consul"
+    line: "Domains=~ryo"
