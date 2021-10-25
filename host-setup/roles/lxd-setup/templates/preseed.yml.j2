@@ -15,17 +15,6 @@ storage_pools:
 
 # Network devices
 networks:
-- name: lxdbr0
-  description: "Default LXD network"
-  type: bridge
-  managed: true
-  config:
-    ipv4.address: '{{ lxd_br0_network_part }}.1/24'
-    ipv4.dhcp.expiry: 5m
-    ipv4.nat: "true"
-    ipv6.address: none
-    dns.mode: managed
-    dns.domain: lxdbr0
 - name: {{ host_id }}
   description: "{{ host_id }} network"
   type: bridge
@@ -46,7 +35,7 @@ profiles:
   devices:
     eth0:
       name: eth0
-      network: lxdbr0
+      network: {{ host_id }}
       type: nic
     root:
       path: /

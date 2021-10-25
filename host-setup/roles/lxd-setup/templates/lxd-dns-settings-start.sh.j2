@@ -3,9 +3,6 @@ echo -n "DNS setup started"
 
 sudo lxc network list
 
-sudo resolvectl dns lxdbr0 '{{ lxd_br0_network_part }}.1'
-sudo resolvectl domain lxdbr0 '~lxdbr0'
-
 sudo resolvectl dns {{ host_id }} '{{ lxd_host_network_part }}.1'
 sudo resolvectl domain {{ host_id }} '~{{ host_id }}'
 
