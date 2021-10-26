@@ -15,6 +15,19 @@ storage_pools:
 
 # Network devices
 networks:
+## TESTING BUILD ON REMOTE
+- name: {{ host_id }}_build
+  description: "Default LXD network for image building"
+  type: bridge
+  managed: true
+  config:
+    ipv4.address: '{{ lxd_build_network_part }}.1/24'
+    ipv4.dhcp.expiry: 5m
+    ipv4.nat: "true"
+    ipv6.address: none
+    dns.mode: managed
+    dns.domain: {{ host_id }}_build
+## END TESTING BUILD ON REMOTE
 - name: {{ host_id }}
   description: "{{ host_id }} network"
   type: bridge
@@ -35,7 +48,10 @@ profiles:
   devices:
     eth0:
       name: eth0
-      network: {{ host_id }}
+      ## TESTING BUILD ON REMOTE
+      network: {{ host_id }}_build
+      ## TESTING BUILD ON REMOTE
+      #network: {{ host_id }}
       type: nic
     root:
       path: /

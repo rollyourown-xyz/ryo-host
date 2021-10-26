@@ -68,6 +68,28 @@
   when: lxd_preseed_changes_made is changed
 
 
+## TESTING BUILD ON REMOTE
+
+- name: Run lxc list to generate client certs and config directories
+  shell:
+    cmd: 'lxc list'
+  become: yes
+  become_user: "{{ host_non_root_user }}"
+
+- name: Add ubuntu-minimal remote configuration to control node LXD remotes config file
+  blockinfile:
+    path: "/home/{{ host_non_root_user }}/snap/lxd/common/config/config.yml"
+    insertafter: "^remotes:"
+    block: |2
+        ubuntu-minimal:
+          addr: https://cloud-images.ubuntu.com/minimal/releases
+          protocol: simplestreams
+          public: true
+    marker: "  # {mark} ANSIBLE MANAGED BLOCK for ubuntu-minimal"
+
+## END TESTING BUILD ON REMOTE
+
+
 - name: Copy start script from template to configure host systemd-resolved and make executable
   template:
     mode: 0770
