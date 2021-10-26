@@ -48,6 +48,7 @@
       - lxd
     append: yes
     state: present
+  register: changes_made
 
 
 - name: Copy LXD preseed file from template
