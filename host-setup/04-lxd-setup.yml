@@ -19,9 +19,7 @@
     transfer_method: scp  
   
   roles:
-    - role: lxd-basic-setup
-    - role: reboot-host
-    - role: lxd-build-setup
+    - role: lxd-setup
     - role: lxd-tune-host
     - role: lxd-container-directories-generic
     - role: reboot-host
