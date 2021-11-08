@@ -1,0 +1,13 @@
+---
+
+## Add ubuntu-minimal remote configuration to control node LXD remotes config file
+- name: Add ubuntu-minimal remote configuration to control node LXD remotes config file
+  blockinfile:
+    path: "/home/{{ host_non_root_user }}/snap/lxd/common/config/config.yml"
+    insertafter: "^remotes:"
+    block: |2
+        ubuntu-minimal:
+          addr: https://cloud-images.ubuntu.com/minimal/releases
+          protocol: simplestreams
+          public: true
+    marker: "  # {mark} ANSIBLE MANAGED BLOCK for ubuntu-minimal"

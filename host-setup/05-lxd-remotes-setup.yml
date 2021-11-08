@@ -41,6 +41,28 @@
     - role: lxd-set-up-control-node-remote
 
 
+## Add ubuntu-minimal as LXD remote on host
+- name: Add ubuntu-minimal as LXD remote on host 
+  hosts: host_wireguard_ip
+  
+  vars_files:
+    # Host configuration
+    - "{{ playbook_dir }}/../configuration/configuration_{{ host_id }}.yml"
+  
+  vars:
+    ansible_port: "{{ host_new_ssh_port }}"
+    ansible_user: "{{ host_non_root_user }}"
+    ansible_ssh_pass: "{{ host_non_root_user_password }}"
+    ansible_ssh_private_key_file: "{{ local_non_root_user_ssh_private_key_file_path }}"
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
+    ansible_become: yes
+    ansible_become_method: sudo
+    transfer_method: scp  
+  
+  roles:
+    - role: lxd-set-up-project-host-ubuntu-minimal-remote
+
+
 - name: Add control node as LXD remote on host 
   hosts: host_wireguard_ip
   
