@@ -1,5 +1,14 @@
 ---
 
+## Ensure the host non-root user snap lxd common configuration directory is present
+- name: Ensure the host non-root user snap lxd common configuration directory is present
+  file:
+    owner: "{{ host_non_root_user }}"
+    group: "{{ host_non_root_user }}"
+    path: "/home/{{ host_non_root_user }}/snap/lxd/common/config/"
+    state: directory
+
+
 ## Add ubuntu-minimal remote configuration to control node LXD remotes config file
 - name: Add ubuntu-minimal remote configuration to control node LXD remotes config file
   blockinfile:
