@@ -9,7 +9,9 @@ bind_addr             = "{{ lxd_host_network_part }}.1"
 advertise_addr        = "{{ lxd_host_network_part }}.1"
 advertise_addr_wan    = "{{ lxd_host_network_part }}.1"
 
-retry_join_wan = [ "{{ veth0_network_part }}.1" ]
+retry_join_wan        = [ "{{ veth0_network_part }}.1" ]
+retry_interval_wan    = "10s"
+reconnect_timeout_wan = "170880h"
 
 # ui_config.enabled = true only for dev/test, false for production
 ui_config = {
