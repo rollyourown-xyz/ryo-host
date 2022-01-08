@@ -9,8 +9,25 @@
 # Basic host configuration
 #-------------------------
 
-# Add the public IPv4 address of your host server here. 
-# !! Make sure this is the same as configured in the inventory file
+# Add the IPv4 address of your host server here.
+# This is the IPv4 address that your control node will use to reach your host server.
+# !! Make sure that this IP address is also configured in the inventory file.
+#
+# NOTE:
+#   - If you are using a VPS or server from a hosting provider, this will be
+#     **the same** as the host_pubic_ip parameter below
+#   - If you are running your own host server in your home or office network, this
+#     will be a private IP address from your home or office network
+host_control_ip: <IP ADDRESS>
+
+# Add the public IPv4 address of your host server here.
+# This is the IPv4 address from which your host server is reachable via public internet.
+#
+# NOTE:
+#   - If you are using a VPS or server from a hosting provider, this will be
+#     **the same** as the host_control_ip parameter above
+#   - If you are running your own host server in your home or office network, this
+#     will be **different** to the host_control_ip parameter above
 host_public_ip: <IP ADDRESS>
 
 # Set the default SSH port, as provided by your server hosting provider

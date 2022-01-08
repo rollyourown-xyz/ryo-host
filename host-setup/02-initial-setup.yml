@@ -1,6 +1,6 @@
 ---
 - name: Set up non root user
-  hosts: host_public_ip
+  hosts: host_control_ip
   
   vars_files:
     # Control node configuration
@@ -21,7 +21,7 @@
 
 
 - name: Initial host setup
-  hosts: host_public_ip
+  hosts: host_control_ip
   
   vars_files:
     # Control node configuration
