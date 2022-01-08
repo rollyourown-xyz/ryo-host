@@ -1,4 +1,5 @@
-# Add the public IPv4 address of your host server here
+# Add here the IPv4 address that your control node will use to connect to your
+# host server
 # !! Make sure this is **the same** as configured for the host_control_ip
 # !! variable in the configuration.yml file
 [host_control_ip]
