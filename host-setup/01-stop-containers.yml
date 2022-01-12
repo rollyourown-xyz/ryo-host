@@ -1,5 +1,5 @@
 ---
-- name: Initial host upgrade
+- name: Stop LXD containers
   hosts: host_wireguard_ip
   
   vars_files:
@@ -18,6 +18,4 @@
     transfer_method: scp  
   
   roles:
-    - role: system-upgrade
-    - role: install-wireguard
-    - role: set-up-wireguard-host
+    - role: lxd-stop-all-containers
