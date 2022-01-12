@@ -1,8 +1,8 @@
 ---
 - import_playbook: 01-setup-control-node-wireguard.yml
-- import_playbook: 02-initial-setup.yml
-- import_playbook: 03-basic-setup.yml
-- import_playbook: 04-lxd-setup.yml
-- import_playbook: 05-lxd-remotes-setup.yml
-- import_playbook: 06-consul-setup.yml
-- import_playbook: 07-consul-setup-control-node.yml
+- import_playbook: 02-setup-initial.yml
+- import_playbook: 03-setup-basic.yml
+- import_playbook: 04-setup-lxd.yml
+- import_playbook: 05-setup-lxd-remotes.yml
+- import_playbook: 06-setup-consul.yml
+- import_playbook: 07-setup-consul-control-node.yml
