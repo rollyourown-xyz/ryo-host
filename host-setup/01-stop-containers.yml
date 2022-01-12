@@ -9,7 +9,7 @@
     - "{{ playbook_dir }}/../configuration/configuration_{{ host_id }}.yml"
   
   vars:
-    ansible_port: "{{ host_initial_ssh_port }}"
+    ansible_port: "{{ host_new_ssh_port }}"
     ansible_user: "{{ host_non_root_user }}"
     ansible_ssh_pass: "{{ host_non_root_user_password }}"
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null'
