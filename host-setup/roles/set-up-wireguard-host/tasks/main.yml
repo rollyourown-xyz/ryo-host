@@ -7,7 +7,7 @@
     dest: /etc/wireguard/wg0.conf
     src: "{{ playbook_dir }}/../configuration/{{ host_id }}.conf"
     force: yes
-  register: changes_made
+  register: host_wg_config_changes_made
 
 
 - name: Enable wg0 as service
@@ -15,3 +15,4 @@
     name: wg-quick@wg0
     enabled: yes
     state: restarted
+  when: host_wg_config_changes_made is changed

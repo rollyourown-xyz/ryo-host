@@ -8,6 +8,7 @@
     line: '"{{ lxd_host_network_part }}.1",'
     insertafter: '^retry_join_wan'
     state: present
+  register: local_consul_changes_made
 
 
 # Restart consul service on control-node
@@ -16,3 +17,5 @@
   service:
     name: consul
     state: restarted
+  when: local_consul_changes_made is changed
+  
