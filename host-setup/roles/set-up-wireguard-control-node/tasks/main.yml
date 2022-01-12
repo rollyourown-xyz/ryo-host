@@ -1,35 +1,71 @@
 ---
+
+# Check existence of a previously generated local wireguard configuration file
+#
+- name: Check existence of a previously generated local wireguard configuration file
+  delegate_to: localhost
+  stat:
+    path: "/etc/wireguard/{{ host_id }}.conf"
+  register: local_wireguard_configuration_file
+
+
+# Check existence of a previously generated host wireguard configuration file
+#
+- name: Check existence of a previously generated host wireguard configuration file
+  delegate_to: localhost
+  stat:
+    path: "{{ playbook_dir }}/../configuration/{{ host_id }}.conf"
+  register: host_wireguard_configuration_file
+
+
+# Generate wireguard host private key (if either wireguard configuration file does not already exist)
+#
 - name: Generate wireguard host private key
   shell: "wg genkey"
   register: generated_host_private_key
+  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
+# Generate wireguard host public key (if either wireguard configuration file does not already exist)
+#
 - name: Generate wireguard host public key
   shell:
     cmd: "wg pubkey"
     stdin: "{{ generated_host_private_key.stdout }}"
     stdin_add_newline: no
   register: generated_host_public_key
+  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
+# Generate wireguard local private key (if either wireguard configuration file does not already exist)
+#
 - name: Generate wireguard local private key
   shell: "wg genkey"
   register: generated_local_private_key
+  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
+# Generate wireguard local public key (if either wireguard configuration file does not already exist)
+#
 - name: Generate wireguard local public key
   shell:
     cmd: "wg pubkey"
     stdin: "{{ generated_local_private_key.stdout }}"
     stdin_add_newline: no
   register: generated_local_public_key
+  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
+# Generate wireguard preshared key (if either wireguard configuration file does not already exist)
+#
 - name: Generate wireguard preshared key
   command: "wg genpsk"
   register: generated_preshared_key
+  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
+# Create host wireguard configuration file (if either wireguard configuration file does not already exist)
+#
 - name: Create host wireguard configuration file
   template:
     mode: 644
@@ -37,8 +73,11 @@
     group: root
     dest: "{{ playbook_dir }}/../configuration/{{ host_id }}.conf"
     src: ryo-host.conf.j2
+  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
+# Create local wireguard configuration file (if either wireguard configuration file does not already exist)
+#
 - name: Create local wireguard configuration file
   template:
     mode: 640
@@ -46,8 +85,11 @@
     group: root
     dest: "/etc/wireguard/{{ host_id }}.conf"
     src: ryo-local.conf.j2
+  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
+# Enable wireguard interface {{ host_id }} as service
+#
 - name: Enable wireguard interface {{ host_id }} as service
   service:
     name: "wg-quick@{{ host_id }}"
