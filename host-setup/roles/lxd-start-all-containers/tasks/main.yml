@@ -1,0 +1,6 @@
+---
+
+- name: Start all LXD containers
+  shell:
+    cmd: lxc start --all 
+

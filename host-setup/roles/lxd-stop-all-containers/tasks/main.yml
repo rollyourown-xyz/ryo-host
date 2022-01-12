@@ -1,0 +1,6 @@
+---
+
+- name: Stop all LXD containers
+  shell:
+    cmd: lxc stop --all 
+

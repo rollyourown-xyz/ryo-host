@@ -41,6 +41,6 @@ echo ""
 
 # Generic host setup
 echo "Executing generic host setup playbook for $hostname"
-echo "Executing command: ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" host-setup/main.yml --extra-vars \"host_id="$hostname"\""
+echo "Executing command: ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" host-setup/setup.yml --extra-vars \"host_id="$hostname"\""
 echo ""
-ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/host-setup/main.yml --extra-vars "host_id="$hostname""
+ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/host-setup/setup.yml --extra-vars "host_id="$hostname""

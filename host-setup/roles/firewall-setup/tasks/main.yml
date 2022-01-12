@@ -38,3 +38,4 @@
     name: iptables-basic-rules.service
     enabled: yes
     state: started
+  register: changes_made
