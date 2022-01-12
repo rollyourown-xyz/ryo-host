@@ -1,6 +1,6 @@
 ---
-- import_playbook: 01-upgrade-stop-containers.yml
-- import_playbook: 02-upgrade-basic.yml
-- import_playbook: 03-upgrade-lxd.yml
-- import_playbook: 04-upgrade-consul.yml
-- import_playbook: 05-upgrade-start-containers.yml
+- import_playbook: upgrade-01-stop-containers.yml
+- import_playbook: upgrade-02-basic-upgrade.yml
+- import_playbook: upgrade-03-lxd-upgrade.yml
+- import_playbook: upgrade-04-consul-upgrade.yml
+- import_playbook: upgrade-05-start-containers-upgrade.yml
