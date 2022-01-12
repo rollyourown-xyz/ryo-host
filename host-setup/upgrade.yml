@@ -1,9 +1,6 @@
 ---
-- import_playbook: 01-stop-containers.yml
-- import_playbook: 02-initial-upgrade.yml
-- import_playbook: 03-basic-upgrade.yml
-- import_playbook: 04-lxd-setup.yml
-- import_playbook: 05-lxd-remotes-setup.yml
-- import_playbook: 06-consul-setup.yml
-- import_playbook: 07-consul-setup-control-node.yml
-- import_playbook: 08-start-containers.yml
+- import_playbook: 01-upgrade-stop-containers.yml
+- import_playbook: 02-upgrade-basic.yml
+- import_playbook: 03-upgrade-lxd.yml
+- import_playbook: 04-upgrade-consul.yml
+- import_playbook: 05-upgrade-start-containers.yml

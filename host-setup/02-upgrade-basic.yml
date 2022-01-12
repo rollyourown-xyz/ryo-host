@@ -1,5 +1,5 @@
 ---
-- name: Initial host upgrade
+- name: Basic host upgrade
   hosts: host_wireguard_ip
   
   vars_files:
@@ -22,3 +22,7 @@
     - role: system-upgrade
     - role: install-wireguard
     - role: set-up-wireguard-host
+    - role: install-basic-packages
+    - role: set-up-ssh
+    - role: firewall-setup
+    - role: reboot-host

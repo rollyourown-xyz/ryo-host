@@ -1,5 +1,5 @@
 ---
-- name: Basic host setup
+- name: Set up LXD on the host
   hosts: host_wireguard_ip
   
   vars_files:
@@ -19,10 +19,8 @@
     transfer_method: scp  
   
   roles:
-    - role: set-hostname
-    - role: install-basic-packages
-    - role: enable-ipv4-packet-forwarding
-    - role: enable-br_netfilter
-    - role: set-up-ssh
-    - role: firewall-setup
+    - role: lxd-setup
+    - role: lxd-tune-host
+    - role: lxd-container-directories-generic
     - role: reboot-host
+
