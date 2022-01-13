@@ -73,7 +73,6 @@
     group: root
     dest: "{{ playbook_dir }}/../configuration/{{ host_id }}.conf"
     src: ryo-host.conf.j2
-  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
 # Create local wireguard configuration file (if either wireguard configuration file does not already exist)
@@ -85,7 +84,6 @@
     group: root
     dest: "/etc/wireguard/{{ host_id }}.conf"
     src: ryo-local.conf.j2
-  when: (not local_wireguard_configuration_file.stat.exists) or (not host_wireguard_configuration_file.stat.exists)
 
 
 # Enable wireguard interface {{ host_id }} as service
