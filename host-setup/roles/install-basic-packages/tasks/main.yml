@@ -34,3 +34,13 @@
     update_cache: yes
     state: present
   register: changes_made
+
+
+# Install unzip
+#
+- name: Install unzip
+  apt:
+    name: unzip
+    update_cache: yes
+    state: present
+  register: changes_made
