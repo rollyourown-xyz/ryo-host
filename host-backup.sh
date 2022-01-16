@@ -65,7 +65,8 @@ echo ""
 echo "Stopping project containers on "$hostname""
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
-  echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname""
+  echo ""
+  echo "...stopping project containers for "$project""
   /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname"
 done
 
@@ -77,7 +78,8 @@ echo ""
 echo "Stopping module containers on "$hostname""
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname""
+  echo ""
+  echo "...stopping module containers for "$module""
   /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname"
 done
 
@@ -89,8 +91,8 @@ echo ""
 echo "Backing up project container persistent storage on "$hostname" with stamp "$stamp""
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
+  echo ""
   echo "Backing up "$project" container persistent storage on "$hostname" with stamp "$stamp""
-  echo "DEBUG ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/backup-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp"""
   ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/backup-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp""
 done
 
@@ -102,8 +104,8 @@ echo ""
 echo "Backing up module container persistent storage on "$hostname" with stamp "$stamp""
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
   echo "Backing up "$module" container persistent storage on "$hostname" with stamp "$stamp""
-  echo "DEBUG ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/backup-module.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp"""
   ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/backup-module.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp""
 done
 
@@ -115,7 +117,8 @@ echo ""
 echo "Starting module containers on "$hostname""
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname""
+  echo ""
+  echo "...starting module containers for "$module""
   /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname"
 done
 
@@ -127,7 +130,8 @@ echo ""
 echo "Starting project containers on "$hostname""
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
-  echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname""
+  echo ""
+  echo "...starting project containers for "$project""
   /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname"
 done
 

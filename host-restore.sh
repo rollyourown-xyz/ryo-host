@@ -100,7 +100,7 @@ else
   echo "!!! Please confirm by typing 'yes' for the next question "
   echo "!!! Default is 'no'."
   echo ""
-  echo -n "!!! Are you sure that you want to restore a backup? "
+  echo -n "Are you sure that you want to restore a backup? "
   read -e -p "[yes/no]:" RESTORE_BACKUP_SURE
   RESTORE_BACKUP_SURE="${RESTORE_BACKUP_SURE:-"no"}"
   RESTORE_BACKUP_SURE="${RESTORE_BACKUP_SURE,,}"
@@ -122,7 +122,7 @@ else
     echo "!!! Please confirm by typing 'yes' for the next question "
     echo "!!! Default is 'no'."
     echo ""
-    echo -n "!!! Are you sure that the backup stamp is correct? "
+    echo -n "Are you sure that the backup stamp is correct? "
     read -e -p "[yes/no]:" RESTORE_BACKUP_STAMP_SURE
     RESTORE_BACKUP_STAMP_SURE="${RESTORE_BACKUP_STAMP_SURE:-"no"}"
     RESTORE_BACKUP_STAMP_SURE="${RESTORE_BACKUP_STAMP_SURE,,}"
@@ -155,6 +155,7 @@ echo "Starting restore on "$hostname""
 #####################################################
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
+  echo ""
   echo "Deleting terraform state for project "$project" on "$hostname""
   /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/delete-terraform-state.sh -n "$hostname"
 done
@@ -164,6 +165,7 @@ done
 ####################################################
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
   echo "Deleting terraform state for module "$module" on "$hostname""
   /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/delete-terraform-state.sh -n "$hostname"
 done
@@ -173,6 +175,7 @@ done
 ####################################################
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
   echo "Deploying module "$module" on "$hostname""
   /bin/bash "$SCRIPT_DIR"/../"$module"/deploy.sh -n "$hostname" -v "$version"
 done
@@ -182,6 +185,7 @@ done
 ###############################################################################################
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
+  echo ""
   echo "Deploying project "$project" on "$hostname""
   /bin/bash "$SCRIPT_DIR"/../"$project"/deploy.sh -n "$hostname" -v "$version" -s
 done
@@ -194,7 +198,8 @@ echo ""
 echo "Stopping project containers on "$hostname""
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
-  echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname""
+  echo ""
+  echo "...stopping project containers for "$project""
   /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname"
 done
 
@@ -206,7 +211,8 @@ echo ""
 echo "Stopping module containers on "$hostname""
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname""
+  echo ""
+  echo "...stopping module containers for "$module""
   /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname"
 done
 
@@ -218,8 +224,8 @@ echo ""
 echo "Restoring module container persistent storage on "$hostname" with stamp "$stamp""
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
   echo "Restoring "$module" container persistent storage on "$hostname" with stamp "$stamp"" 
-  echo "DEBUG ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp"""
   ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp""
 done
 
@@ -231,8 +237,8 @@ echo ""
 echo "Restoring project container persistent storage on "$hostname" with stamp "$stamp""
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
+  echo ""
   echo "Restoring "$project" container persistent storage on "$hostname" with stamp "$stamp""
-  echo "DEBUG ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp"""
   ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp""
 done
 
@@ -244,7 +250,8 @@ echo ""
 echo "Starting module containers on "$hostname""
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname""
+  echo ""
+  echo "...starting module containers for "$module""
   /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname"
 done
 
@@ -256,7 +263,8 @@ echo ""
 echo "Starting project containers on "$hostname""
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
-  echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname""
+  echo ""
+  echo "...starting project containers for "$project""
   /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname"
 done
 
