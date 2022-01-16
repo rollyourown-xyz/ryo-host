@@ -95,8 +95,8 @@ else
   echo ""
   echo -n "!!! Are you sure that you want to restore a backup? "
   read -e -p "[yes/no]:" RESTORE_BACKUP_SURE
-  RESTORE_BACKUP_SURE="${RESTORE_BACKUP:-"no"}"
-  RESTORE_BACKUP_SURE="${RESTORE_BACKUP,,}"
+  RESTORE_BACKUP_SURE="${RESTORE_BACKUP_SURE:-"no"}"
+  RESTORE_BACKUP_SURE="${RESTORE_BACKUP_SURE,,}"
   
   if [ ! "$RESTORE_BACKUP_SURE" == "yes" ] && [ ! "$RESTORE_BACKUP_SURE" == "no" ]; then
     echo "Invalid option "${RESTORE_BACKUP_SURE}". Exiting"
@@ -117,8 +117,8 @@ else
     echo ""
     echo -n "!!! Are you sure that the backup stamp is correct? "
     read -e -p "[yes/no]:" RESTORE_BACKUP_STAMP_SURE
-    RESTORE_BACKUP_STAMP_SURE="${RESTORE_BACKUP:-"no"}"
-    RESTORE_BACKUP_STAMP_SURE="${RESTORE_BACKUP,,}"
+    RESTORE_BACKUP_STAMP_SURE="${RESTORE_BACKUP_STAMP_SURE:-"no"}"
+    RESTORE_BACKUP_STAMP_SURE="${RESTORE_BACKUP_STAMP_SURE,,}"
     
     if [ ! "$RESTORE_BACKUP_STAMP_SURE" == "yes" ] && [ ! "$RESTORE_BACKUP_STAMP_SURE" == "no" ]; then
       echo "Invalid option "${RESTORE_BACKUP_STAMP_SURE}". Exiting"
