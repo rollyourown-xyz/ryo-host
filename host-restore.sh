@@ -152,7 +152,7 @@ echo "Stopping project containers on "$hostname""
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
   echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname""
-  #/bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname"
+  /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname"
 done
 
 
@@ -164,7 +164,7 @@ echo "Stopping module containers on "$hostname""
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
   echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname""
-  #/bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname"
+  /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname"
 done
 
 
@@ -176,8 +176,8 @@ echo "Restoring module container persistent storage on "$hostname" with stamp "$
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
   echo "Restoring "$module" container persistent storage on "$hostname" with stamp "$stamp"" 
-  echo "DEBUG ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module-or-project.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp"""
-  #ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module-or-project.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp""
+  echo "DEBUG ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp"""
+  ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp""
 done
 
 
@@ -189,8 +189,8 @@ echo "Restoring project container persistent storage on "$hostname" with stamp "
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
   echo "Restoring "$project" container persistent storage on "$hostname" with stamp "$stamp""
-  echo "DEBUG ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module-or-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp"""
-  #ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module-or-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp""
+  echo "DEBUG ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp"""
+  ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp""
 done
 
 
@@ -202,7 +202,7 @@ echo "Starting module containers on "$hostname""
 
 for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
   echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname""
-  #/bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname"
+  /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname"
 done
 
 
@@ -214,7 +214,7 @@ echo "Starting project containers on "$hostname""
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
   echo "DEBUG /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname""
-  #/bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname"
+  /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname"
 done
 
 
