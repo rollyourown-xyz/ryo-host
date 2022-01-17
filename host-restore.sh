@@ -151,72 +151,6 @@ echo ""
 echo "Starting restore on "$hostname""
 
 
-# Delete terraform state for all projects on the host
-#####################################################
-
-for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
-  echo ""
-  echo "Deleting terraform state for project "$project" on "$hostname""
-  /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/delete-terraform-state.sh -n "$hostname"
-done
-
-
-# Delete terraform state for all modules on the host
-####################################################
-
-for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo ""
-  echo "Deleting terraform state for module "$module" on "$hostname""
-  /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/delete-terraform-state.sh -n "$hostname"
-done
-
-
-# Deploy all modules listed in deployed-modules file
-####################################################
-
-for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo ""
-  echo "Deploying module "$module" on "$hostname""
-  /bin/bash "$SCRIPT_DIR"/../"$module"/deploy.sh -n "$hostname" -v "$version"
-done
-
-
-# Deploy all projects listed in deployed-projects file (excluding associated module deployment)
-###############################################################################################
-
-for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
-  echo ""
-  echo "Deploying project "$project" on "$hostname""
-  /bin/bash "$SCRIPT_DIR"/../"$project"/deploy.sh -n "$hostname" -v "$version" -s
-done
-
-
-# Stop project containers
-##########################
-
-echo ""
-echo "Stopping project containers on "$hostname""
-
-for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
-  echo ""
-  echo "...stopping project containers for "$project""
-  /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname"
-done
-
-
-# Stop module containers
-########################
-
-echo ""
-echo "Stopping module containers on "$hostname""
-
-for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo ""
-  echo "...stopping module containers for "$module""
-  /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname"
-done
-
-
 # Restore module container persistent storage
 #############################################
 
@@ -243,29 +177,43 @@ for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"
 done
 
 
-# Start module containers
-#########################
-
-echo ""
-echo "Starting module containers on "$hostname""
-
-for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo ""
-  echo "...starting module containers for "$module""
-  /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname"
-done
-
-
-# Start project containers
-##########################
-
-echo ""
-echo "Starting project containers on "$hostname""
+# Delete terraform state for all projects on the host
+#####################################################
 
 for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
   echo ""
-  echo "...starting project containers for "$project""
-  /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname"
+  echo "Deleting terraform state for project "$project" on "$hostname""
+  /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/delete-terraform-state.sh -n "$hostname"
+done
+
+
+# Delete terraform state for all modules on the host
+####################################################
+
+for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
+  echo "Deleting terraform state for module "$module" on "$hostname""
+  /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/delete-terraform-state.sh -n "$hostname"
+done
+
+
+# Deploy all modules listed in deployed-modules file (using -r flag)
+####################################################################
+
+for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
+  echo "Deploying module "$module" on "$hostname""
+  /bin/bash "$SCRIPT_DIR"/../"$module"/deploy.sh -n "$hostname" -v "$version" -r
+done
+
+
+# Deploy all projects listed in deployed-projects file (using -r and -s flags)
+##############################################################################
+
+for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
+  echo ""
+  echo "Deploying project "$project" on "$hostname""
+  /bin/bash "$SCRIPT_DIR"/../"$project"/deploy.sh -n "$hostname" -v "$version" -r -s
 done
 
 
