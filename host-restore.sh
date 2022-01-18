@@ -63,13 +63,14 @@ fi
 echo " "
 echo "!!! CAUTION! "
 echo "!!! "
-echo "!!! A restore should only be carried out on a newly-configured host and "
+echo "!!! A restore should normally only be carried out on a newly-configured host and "
 echo "!!! will redeploy all project and module components on the host server, "
-echo "!!! before restoring a previous state of the projects and modules from a backup "
+echo "!!! with a previous state of the projects and modules from a backup "
 echo "!!! "
-echo "!!! This is usually only needed to restore after a system failure. "
+echo "!!! This is usually only needed to restore after a system failure or to move "
+echo "!!! projects and modules to a new host server. "
 echo " "
-echo "!!! A restore should not be carried out on a host server with functioning "
+echo "!!! A restore should not be carried out for a host server with functioning "
 echo "!!! projects! "
 echo " "
 echo "Do you want to restore a backup on "$hostname"? (y/n)"
@@ -151,32 +152,6 @@ echo ""
 echo "Starting restore on "$hostname""
 
 
-# Restore module container persistent storage
-#############################################
-
-echo ""
-echo "Restoring module container persistent storage on "$hostname" with stamp "$stamp""
-
-for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
-  echo ""
-  echo "Restoring "$module" container persistent storage on "$hostname" with stamp "$stamp"" 
-  ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp""
-done
-
-
-# Restore project container persistent storage
-##############################################
-
-echo ""
-echo "Restoring project container persistent storage on "$hostname" with stamp "$stamp""
-
-for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
-  echo ""
-  echo "Restoring "$project" container persistent storage on "$hostname" with stamp "$stamp""
-  ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp""
-done
-
-
 # Delete terraform state for all projects on the host
 #####################################################
 
@@ -214,6 +189,84 @@ for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"
   echo ""
   echo "Deploying project "$project" on "$hostname""
   /bin/bash "$SCRIPT_DIR"/../"$project"/deploy.sh -n "$hostname" -v "$version" -r -s
+done
+
+
+# Stop project containers
+##########################
+
+echo ""
+echo "Stopping project containers on "$hostname""
+
+for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
+  echo ""
+  echo "...stopping project containers for "$project""
+  /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname"
+done
+
+
+# Stop module containers
+########################
+
+echo ""
+echo "Stopping module containers on "$hostname""
+
+for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
+  echo "...stopping module containers for "$module""
+  /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname"
+done
+
+
+# Restore module container persistent storage
+#############################################
+
+echo ""
+echo "Restoring module container persistent storage on "$hostname" with stamp "$stamp""
+
+for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
+  echo "Restoring "$module" container persistent storage on "$hostname" with stamp "$stamp"" 
+  ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-module.yml --extra-vars "id="$module" host_id="$hostname" backup_stamp="$stamp""
+done
+
+
+# Restore project container persistent storage
+##############################################
+
+echo ""
+echo "Restoring project container persistent storage on "$hostname" with stamp "$stamp""
+
+for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
+  echo ""
+  echo "Restoring "$project" container persistent storage on "$hostname" with stamp "$stamp""
+  ansible-playbook -i "$SCRIPT_DIR"/configuration/inventory_"$hostname" "$SCRIPT_DIR"/backup-restore/restore-project.yml --extra-vars "id="$project" host_id="$hostname" backup_stamp="$stamp""
+done
+
+
+# Start module containers
+#########################
+
+echo ""
+echo "Starting module containers on "$hostname""
+
+for module in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-modules_"$hostname".yml ); do
+  echo ""
+  echo "...starting module containers for "$module""
+  /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/start-module-containers.sh -n "$hostname"
+done
+
+
+# Start project containers
+##########################
+
+echo ""
+echo "Starting project containers on "$hostname""
+
+for project in $( yq eval '.[]' "$SCRIPT_DIR"/backup-restore/deployed-projects_"$hostname".yml ); do
+  echo ""
+  echo "...starting project containers for "$project""
+  /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/start-project-containers.sh -n "$hostname"
 done
 
 
