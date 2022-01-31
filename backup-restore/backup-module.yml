@@ -48,14 +48,3 @@
       file:
         path: "/backup/tmp"
         state: absent
-
-    # - name: Copy persistent storage archive for {{ id }} containers from {{ host_id }} to control node
-    #   fetch:
-    #     src: "/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
-    #     dest: "{{ playbook_dir }}/backups/"
-    #     flat: yes
-
-    # - name: Remove backup file on {{ host_id }}
-    #   file:
-    #     path: "/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
-    #     state: absent

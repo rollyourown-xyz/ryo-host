@@ -27,7 +27,6 @@
         path: "/var/containers/{{ id }}"
         state: absent
 
-## NEW FROM HERE
     - name: Ensure the tmp directory is present on the remote host
       file:
         path: "/backup/tmp"
@@ -79,14 +78,3 @@
       file:
         path: "/backup/tmp"
         state: absent
-
-# END NEW
-
-# ORIGINAL
-    # - name: Unarchive persistent storage backup for {{ id }} containers to {{ host_id }}
-    #   unarchive:
-    #     src: "{{ playbook_dir }}/backups/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
-    #     dest: "/var/containers"
-    #     extra_opts:
-    #     - --same-owner
-    #     - -p
