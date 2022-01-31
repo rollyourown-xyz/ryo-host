@@ -81,6 +81,16 @@
 ## Settings in /etc/sysctl.conf
 ## Reload no as changes_made will cause reboot
 
+- name: Set sysctl entry fs.aio-max-nr
+  sysctl:
+    name: fs.aio-max-nr
+    value: '524288'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
 - name: Set sysctl entry fs.inotify.max_queued_events
   sysctl:
     name: fs.inotify.max_queued_events
@@ -111,20 +121,30 @@
   register: changes_made
 
 
-- name: Set sysctl entry vm.max_map_count
+- name: Set sysctl entry kernel.dmesg_restrict
   sysctl:
-    name: vm.max_map_count
-    value: '262144'
+    name: kernel.dmesg_restrict
+    value: '1'
     sysctl_set: yes
     state: present
     reload: no
   register: changes_made
 
 
-- name: Set sysctl entry kernel.dmesg_restrict
+- name: Set sysctl entry kernel.keys.maxbytes
   sysctl:
-    name: kernel.dmesg_restrict
-    value: '1'
+    name: kernel.keys.maxbytes
+    value: '2000000'
+    sysctl_set: yes
+    state: present
+    reload: no
+  register: changes_made
+
+
+- name: Set sysctl entry kernel.keys.maxkeys
+  sysctl:
+    name: kernel.keys.maxkeys
+    value: '2000'
     sysctl_set: yes
     state: present
     reload: no
@@ -151,42 +171,11 @@
   register: changes_made
 
 
-- name: Set sysctl entry net.core.bpf_jit_limit
+- name: Set sysctl entry vm.max_map_count
   sysctl:
-    name: net.core.bpf_jit_limit
-    value: '3000000000'
+    name: vm.max_map_count
+    value: '262144'
     sysctl_set: yes
     state: present
     reload: no
   register: changes_made
-
-
-- name: Set sysctl entry kernel.keys.maxkeys
-  sysctl:
-    name: kernel.keys.maxkeys
-    value: '2000'
-    sysctl_set: yes
-    state: present
-    reload: no
-  register: changes_made
-
-
-- name: Set sysctl entry kernel.keys.maxbytes
-  sysctl:
-    name: kernel.keys.maxbytes
-    value: '2000000'
-    sysctl_set: yes
-    state: present
-    reload: no
-  register: changes_made
-
-
-- name: Set sysctl entry fs.aio-max-nr
-  sysctl:
-    name: fs.aio-max-nr
-    value: '524288'
-    sysctl_set: yes
-    state: present
-    reload: no
-  register: changes_made
-
