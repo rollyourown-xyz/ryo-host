@@ -44,3 +44,12 @@
     update_cache: yes
     state: present
   register: changes_made
+
+
+# Install rsync
+#
+- name: Install rsync
+  apt:
+    name: rsync
+    update_cache: yes
+    state: present
