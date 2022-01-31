@@ -22,21 +22,40 @@
   
   tasks:
 
+    - name: Ensure the tmp directory is present on the remote host
+      file:
+        path: "/backup/tmp"
+        state: directory
+
     - name: Archive persistent storage for {{ id }} containers on {{ host_id }}
       archive:
         path: "/var/containers/{{ id }}"
-        dest: "/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
+        dest: "/backup/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
         format: gz
         remove: no
         force_archive: yes
 
-    - name: Copy persistent storage archive for {{ id }} containers from {{ host_id }} to control node
-      fetch:
-        src: "/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
+    - name: Copy (sync) persistent storage archive for {{ id }} containers from {{ host_id }} to control node
+      synchronize:
+        mode: pull
+        src: "/backup/tmp/"
         dest: "{{ playbook_dir }}/backups/"
-        flat: yes
+        dest_port: "{{ host_new_ssh_port | int }}"
+        set_remote_user: no
+        delete: no
 
-    - name: Remove backup file on {{ host_id }}
+    - name: Remove the tmp directory on the remote host
       file:
-        path: "/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
+        path: "/backup/tmp"
         state: absent
+
+    # - name: Copy persistent storage archive for {{ id }} containers from {{ host_id }} to control node
+    #   fetch:
+    #     src: "/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
+    #     dest: "{{ playbook_dir }}/backups/"
+    #     flat: yes
+
+    # - name: Remove backup file on {{ host_id }}
+    #   file:
+    #     path: "/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
+    #     state: absent

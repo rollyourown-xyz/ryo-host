@@ -27,10 +27,66 @@
         path: "/var/containers/{{ id }}"
         state: absent
 
-    - name: Unarchive persistent storage backup for {{ id }} containers to {{ host_id }}
-      unarchive:
+## NEW FROM HERE
+    - name: Ensure the tmp directory is present on the remote host
+      file:
+        path: "/backup/tmp"
+        state: directory
+
+    - name: Ensure the tmp directory is present on the control node
+      delegate_to: localhost
+      become: yes
+      become_user: "{{ local_non_root_user }}"
+      file:
+        path: "{{ playbook_dir }}/backups/tmp"
+        state: directory
+
+    - name: Copy the selected archive file to the tmp directory on the control node
+      delegate_to: localhost
+      become: yes
+      become_user: "{{ local_non_root_user }}"
+      copy:
         src: "{{ playbook_dir }}/backups/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
+        dest: "{{ playbook_dir }}/backups/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
+
+    - name: Copy (sync) persistent storage archive for {{ id }} containers from control node to {{ host_id }}
+      synchronize:
+        mode: push
+        src: "{{ playbook_dir }}/backups/tmp/"
+        dest: "/backup/tmp/"
+        dest_port: "{{ host_new_ssh_port | int }}"
+        set_remote_user: no
+        delete: no
+
+    - name: Unarchive persistent storage backup for {{ id }} containers on {{ host_id }}
+      unarchive:
+        src: "/backup/tmp/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
         dest: "/var/containers"
         extra_opts:
         - --same-owner
         - -p
+        remote_src: yes
+
+    - name: Remove the tmp directory on the control node
+      delegate_to: localhost
+      become: yes
+      become_user: "{{ local_non_root_user }}"
+      file:
+        path: "{{ playbook_dir }}/backups/tmp"
+        state: absent
+
+    - name: Remove the tmp directory on the remote host
+      file:
+        path: "/backup/tmp"
+        state: absent
+
+# END NEW
+
+# ORIGINAL
+    # - name: Unarchive persistent storage backup for {{ id }} containers to {{ host_id }}
+    #   unarchive:
+    #     src: "{{ playbook_dir }}/backups/backup-{{ host_id }}-{{ id }}-{{ backup_stamp }}.tar.gz"
+    #     dest: "/var/containers"
+    #     extra_opts:
+    #     - --same-owner
+    #     - -p
