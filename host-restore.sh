@@ -96,7 +96,7 @@ else
   echo "!!! the current state and may not be able to recover it! "
   echo "!!! "
   echo "!!! If you proceed, you will restore projects and modules "
-  echo "!!! on "$hosname" from backups stamped with "$stamp" "
+  echo "!!! on "$hostname" from backups stamped with "$stamp" "
   echo "!!! "
   echo "!!! Please confirm by typing 'yes' for the next question "
   echo "!!! Default is 'no'."
