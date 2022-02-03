@@ -96,7 +96,7 @@ do
   RESTORE_ALL="${RESTORE_ALL,,}"
 done
 
-if [ "$RESTORE_ALL" == "y" ]; do
+if [ "$RESTORE_ALL" == "y" ]; then
   echo ""
   echo "!!! ARE YOU SURE? "
   echo "!!! "
@@ -124,7 +124,7 @@ if [ "$RESTORE_ALL" == "y" ]; do
     RESTORE_ALL_SURE="${RESTORE_ALL_SURE,,}"
   done
 
-  if [ "$RESTORE_ALL_SURE" == "yes" ]; do
+  if [ "$RESTORE_ALL_SURE" == "yes" ]; then
     echo ""
     echo "!!! Please confirm the stamp of the backup to restore "
     echo "!!! " 
@@ -148,7 +148,7 @@ if [ "$RESTORE_ALL" == "y" ]; do
       RESTORE_ALL_STAMP_SURE="${RESTORE_ALL_STAMP_SURE,,}"
     done
 
-    if [ "$RESTORE_ALL_STAMP_SURE" == "yes" ]; do
+    if [ "$RESTORE_ALL_STAMP_SURE" == "yes" ]; then
 
       echo ""
       echo "Starting restore of ALL projects and modules on "$hostname""
