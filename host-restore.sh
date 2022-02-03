@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # host-restore.sh
-# This script restores a previous backup of the persistent storage for the modules and projects deployed on a host server
-# and should only be used to restore to a newly set up host server.
+# This script restores a previous backup of the persistent storage for the modules and projects deployed on a host server.
 #
 # ATTENTION!!!
 # Before restoring ALL projects, the process will **delete** the state of the projects and/or modules on the control machine 
