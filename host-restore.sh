@@ -115,7 +115,7 @@ if [ "$RESTORE_ALL" == "y" ]; then
   RESTORE_ALL_SURE="${RESTORE_ALL_SURE,,}"
 
   # Check input
-  while [ ! "$RESTORE_ALL_SURE" == "y" ] && [ ! "$RESTORE_ALL_SURE" == "n" ]
+  while [ ! "$RESTORE_ALL_SURE" == "yes" ] && [ ! "$RESTORE_ALL_SURE" == "no" ]
   do
     echo "Invalid option "${RESTORE_ALL_SURE}". Please try again."
     echo -n "Are you sure that you want to restore a backup for ALL projects and modules on "$hostname"? "
@@ -139,7 +139,7 @@ if [ "$RESTORE_ALL" == "y" ]; then
     RESTORE_ALL_STAMP_SURE="${RESTORE_ALL_STAMP_SURE,,}"
 
     # Check input
-    while [ ! "$RESTORE_ALL_STAMP_SURE" == "y" ] && [ ! "$RESTORE_ALL_STAMP_SURE" == "n" ]
+    while [ ! "$RESTORE_ALL_STAMP_SURE" == "yes" ] && [ ! "$RESTORE_ALL_STAMP_SURE" == "no" ]
     do
       echo "Invalid option "${RESTORE_ALL_STAMP_SURE}". Please try again."
       echo -n "Are you sure that you want to restore a backup for ALL projects and modules on "$hostname"? "
