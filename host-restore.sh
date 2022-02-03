@@ -157,6 +157,20 @@ if [ "$RESTORE_ALL" == "y" ]; then
       echo -n "Please enter a new version stamp for the new images to deploy, e.g. 20210101-1: "
       read -e -p "" VERSION_STAMP
 
+      # Stop project containers if present
+      echo ""
+      echo "Stopping project containers on "$hostname" if present"
+      for project in $PROJECTS; do
+        /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/stop-project-containers.sh -n "$hostname"
+      done
+
+      # Stop module containers if present
+      echo ""
+      echo "Stopping module containers on "$hostname""
+      for module in $MODULES; do
+        /bin/bash "$SCRIPT_DIR"/../"$module"/scripts-module/stop-module-containers.sh -n "$hostname"
+      done
+
       # Delete terraform state for all projects on "$hostname" on the host
       for project in $PROJECTS; do
         echo ""
