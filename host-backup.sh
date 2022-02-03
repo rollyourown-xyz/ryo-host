@@ -96,7 +96,7 @@ if [ "$BACKUP_ALL" == "y" ]; then
   echo ""
   echo "Backing up all project container persistent storage on "$hostname" with stamp "$stamp""
   for project in $PROJECTS; do
-    /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-module/backup-project.sh -n "$hostname" -s "$stamp"
+    /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/backup-project.sh -n "$hostname" -s "$stamp"
   done
 
   echo ""

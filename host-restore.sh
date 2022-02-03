@@ -210,7 +210,7 @@ if [ "$RESTORE_ALL" == "y" ]; do
       for project in $PROJECTS; do
         echo ""
         echo "Restoring "$project" container persistent storage on "$hostname" with stamp "$stamp""
-        /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-module/restore-project.sh -n "$hostname" -s "$stamp"
+        /bin/bash "$SCRIPT_DIR"/../"$project"/scripts-project/restore-project.sh -n "$hostname" -s "$stamp"
       done
 
       # Start module containers
