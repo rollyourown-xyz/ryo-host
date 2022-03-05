@@ -1,4 +1,7 @@
 ---
+# SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Ensure br_netfilter kernel module is loaded at boot by ensuring that the line 'br_netfilter' is
 # present in the file /etc/modules-load.d/bridge.conf, creating the file if it doesn't exist
 # This is needed so that LXD containers can reach containers (e.g. ingress-proxy) via the host public IP address from the

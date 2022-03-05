@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Add here the IPv4 address that your control node will use to connect to your
 # host server
 # !! Make sure this is **the same** as configured for the host_control_ip

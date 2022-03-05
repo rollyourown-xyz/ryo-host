@@ -1,4 +1,7 @@
 ---
+# SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 - import_playbook: setup-01-control-node-wireguard-setup.yml
 - import_playbook: setup-02-initial-setup.yml
 - import_playbook: setup-03-basic-setup.yml

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
+SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
 # Roll Your Own Host Server
 
 This repository contains automation code to set up a [rollyourown.xyz](https://rollyourown.xyz) [host server](https://rollyourown.xyz/rollyourown/how_to_use/host_server/).

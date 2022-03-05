@@ -1,4 +1,7 @@
 ---
+# SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 - name: Generate random salt
   shell: "tr -dc A-Za-z0-9 </dev/urandom | head -c 12"
   register: password_salt

@@ -1,4 +1,7 @@
 ---
+# SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 # Reboot the server and wait for reconnect
 # Note: ansible reboot module does not work if IP address has changed or 2FA has
 # been enabled on an internet-facing IP address. To test reboot success, we make sure

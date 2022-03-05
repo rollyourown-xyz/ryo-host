@@ -1,4 +1,7 @@
 ---
+# SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 #-----------------------------------------------------------------------------------------------------------------------------------
 # Use of 2FA is recommended for SSH access via public internet but requires additional preparation before host configuration
 # See documentation at https://rollyourown.xyz/ ...
