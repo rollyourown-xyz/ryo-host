@@ -27,5 +27,5 @@
     - role: set-up-wireguard-host
     - role: install-basic-packages
     - role: set-up-ssh
-    - role: firewall-setup
+    - role: set-up-firewall
     - role: reboot-host
