@@ -2,43 +2,64 @@
 # SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-- name: Copy firewall rules script (making executable)
+#################
+## USING nftables
+#################
+
+- name: Copy firewall configuration
   template:
     mode: 0770
     owner: root
     group: root
-    dest: /usr/local/bin/iptables-basic-rules.sh
-    src: iptables-basic-rules.sh.j2
-    force: yes
-
-
-# The firewall rules reset script is optional, to enable manual firewall reset on the host
-#
-- name: Copy firewall rules reset script (making executable)
-  copy:
-    mode: 0770
-    owner: root
-    group: root
-    dest: /usr/local/bin/iptables-rules-reset.sh
-    src: iptables-rules-reset.sh
+    dest: /etc/nftables.conf
+    src: nftables.conf.j2
     force: yes
   register: changes_made
 
 
-- name: Copy basic firewall service definition
-  copy:
-    mode: 0644
-    owner: root
-    group: root
-    dest: /lib/systemd/system/iptables-basic-rules.service
-    src: iptables-basic-rules.service
-    force: yes
-  register: changes_made
+#################
+## USING iptables
+#################
+
+# - name: Copy firewall rules script (making executable)
+#   template:
+#     mode: 0770
+#     owner: root
+#     group: root
+#     dest: /usr/local/bin/iptables-basic-rules.sh
+#     src: iptables-basic-rules.sh.j2
+#     force: yes
 
 
-- name: Enable basic firewall service
-  service:
-    name: iptables-basic-rules.service
-    enabled: yes
-    state: started
-  when: changes_made is changed
+# # The firewall rules reset script is optional, to enable manual firewall reset on the host
+# #
+# - name: Copy firewall rules reset script (making executable)
+#   copy:
+#     mode: 0770
+#     owner: root
+#     group: root
+#     dest: /usr/local/bin/iptables-rules-reset.sh
+#     src: iptables-rules-reset.sh
+#     force: yes
+#   register: changes_made
+
+
+# - name: Copy basic firewall service definition
+#   copy:
+#     mode: 0644
+#     owner: root
+#     group: root
+#     dest: /lib/systemd/system/iptables-basic-rules.service
+#     src: iptables-basic-rules.service
+#     force: yes
+#   register: changes_made
+
+
+# - name: Enable basic firewall service
+#   service:
+#     name: iptables-basic-rules.service
+#     enabled: yes
+#     state: started
+#   when: changes_made is changed
+
+

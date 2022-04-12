@@ -23,6 +23,7 @@
   
   roles:
     - role: set-hostname
+    - role: install-nftables
     - role: install-basic-packages
     - role: enable-packet-forwarding
     - role: enable-br_netfilter
