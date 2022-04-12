@@ -21,6 +21,9 @@ table inet filter {
         # Allow inbound traffic on loopback interface
         iifname "lo" accept
 
+        # Allow inbound traffic on LXD network interface
+        iifname "{{ host_id }}" accept
+
         # Allow IPv6 neighbour discovery
         icmpv6 type { nd-neighbor-solicit, nd-router-advert, nd-neighbor-advert } accept
 
@@ -73,6 +76,10 @@ table inet filter {
     chain forward {
         # By default, drop forwarded traffic
         type filter hook forward priority filter; policy drop;
+
+        # Allow forwarding to and from LXD network interface
+        iifname "{{ host_id }}" accept
+        oifname "{{ host_id }}" accept
     }
 
     chain outbound {
