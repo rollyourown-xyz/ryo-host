@@ -31,9 +31,9 @@ networks:
     #
     # THE FOLLOWING IS EXPERIMENTAL
     #ipv6.address: none
-    ipv6.address: '{{ lxd_host_ipv6_network_prefix }}::1/64'
+    ipv6.address: '{{ lxd_host_network_ipv6_prefix }}::1/64'
     ipv6.dhcp: true
-    ipv6.dhcp.ranges: '{{ lxd_host_ipv6_network_prefix }}::100-{{ lxd_host_ipv6_network_prefix }}::ffff'
+    ipv6.dhcp.ranges: '{{ lxd_host_network_ipv6_prefix }}::100-{{ lxd_host_network_ipv6_prefix }}::ffff'
     ipv6.dhcp.stateful: true
     ipv6.firewall: false
     ipv6.nat: false
