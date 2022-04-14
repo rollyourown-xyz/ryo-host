@@ -121,8 +121,8 @@ table inet nat {
         # LXD network IPv6 NATting for traffic to internet
         # Note: this provides IPv6 NAT **to the internet** for LXD containers in LXD host network without
         # using ipv6.nat=true on the LXD network definition (which would also NAT **between** LXD networks)
-        ip6 saddr {{ lxd_host_ipv6_network_prefix }}::0/64 oifname "eth*" masquerade
-        ip6 saddr {{ lxd_host_ipv6_network_prefix }}::0/64 oifname "en*" masquerade
+        ip6 saddr {{ lxd_host_network_ipv6_prefix }}::0/64 oifname "eth*" masquerade
+        ip6 saddr {{ lxd_host_network_ipv6_prefix }}::0/64 oifname "en*" masquerade
         # END EXPERIMENTAL
         #
 
