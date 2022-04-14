@@ -21,7 +21,7 @@ PresharedKey = {{ generated_preshared_key.stdout }}
 #
 # THE FOLLOWING IS EXPERIMENTAL
 #AllowedIPs = {{ wireguard_address_network_part }}.2/32, {{ [ lxd_host_network_part, ".0/24"] | join('') }}
-AllowedIPs = {{ wireguard_address_network_part }}.2/32, {{ wireguard_address_network_ipv6_prefix }}::2/128, {{ [ lxd_host_network_part, ".0/24"] | join('') }}, {{ [ lxd_host_network_ipv6_prefix, "::0/64"] | join('') }}
+AllowedIPs = {{ wireguard_address_network_part }}.2/32, {{ wireguard_address_network_ipv6_prefix }}::2/128, {{ [ lxd_host_network_part, ".0/24"] | join('') }}, {{ [ host_public_ipv6_prefix , "::", lxd_host_network_ipv6_subnet, ":0/112"] | join('') }}
 # END EXPERIMENTAL
 #
 Endpoint = {{ host_control_ip }}:{{ host_wireguard_port }}

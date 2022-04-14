@@ -35,9 +35,13 @@ host_public_ip: <IP ADDRESS>
 
 #
 # THE FOLLOWING IS EXPERIMENTAL
+# Add the public IPv6 prefix for your host server here (usually a /56 or /64 prefix)
+# This is the IPv6 prefix provided to you by your hosting provider
+# DO NOT add "/56" or "/64", only the prefix, REMOVE any trailing colons (":")
+host_public_ipv6_prefix: <IPV6 PREFIX>
 # Add the public IPv6 address of your host server here.
 # This is the IPv6 address from which your host server is reachable via public internet.
-host_public_ip_v6: <IPV6 ADDRESS>
+host_public_ipv6_address: <IPV6 ADDRESS>
 # END EXPERIMENTAL
 #
 
@@ -104,7 +108,7 @@ wireguard_address_network_ipv6_prefix: "fd10:10:0:1"
 lxd_host_network_part: "10.10.1"
 #
 # THE FOLLOWING IS EXPERIMENTAL
-lxd_host_network_ipv6_prefix: "fd10:10:10:1"
+lxd_host_network_ipv6_subnet: "1"
 # END EXPERIMENTAL
 #
 

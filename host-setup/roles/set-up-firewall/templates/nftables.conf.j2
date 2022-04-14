@@ -31,6 +31,9 @@ table inet filter {
         icmp type echo-request limit rate 5/second accept
         icmpv6 type echo-request limit rate 5/second accept
 
+        # Allow IPv6 DHCPv6
+        udp dport dhcpv6-client accept
+
         # Allow inbound SSH on custom TCP port
         tcp dport {{ host_new_ssh_port }} accept
 
@@ -49,6 +52,11 @@ table inet filter {
         # - Consul WAN Serf (Port 8302)
         # - Consul DNS server (Port 8600)
         ip saddr {{ lxd_host_network_part }}.0/24 udp dport { 8301, 8302, 8600 } accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:0/112 udp dport { 8301, 8302, 8600 } accept
+        # END EXPERIMENTAL
+        #
 
         # Allow on TCP from LXD host network:
         # - Consul Server RPC (Port 8300)
@@ -57,21 +65,41 @@ table inet filter {
         # - Consul HTTP API (Port 8500)
         # - Consul DNS server (Port 8600)
         ip saddr {{ lxd_host_network_part }}.0/24 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:0/112 udp dport { 8301, 8302, 8600 } accept
+        # END EXPERIMENTAL
+        #
 
         # Allow on UDP from control-node consul server:
         # - Consul WAN Serf (Port 8302)
         ip saddr {{ veth0_network_part }}.1/32 udp dport 8302 accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ veth0_network_ipv6_prefix }}::1/128 udp dport 8302 accept
+        # END EXPERIMENTAL
+        #
 
         # Allow on TCP from control-node consul server:
         # - Consul Server RPC (Port 8300)
         # - Consul WAN Serf (Port 8302)
         # - Consul HTTP API (Port 8500)
         ip saddr {{ veth0_network_part }}.1/32 tcp dport { 8300, 8302, 8500 } accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ veth0_network_ipv6_prefix }}::1/128 tcp dport { 8300, 8302, 8500 } accept
+        # END EXPERIMENTAL
+        #
 
         # Allow on TCP from wireguard network:
         # - Consul HTTP API (Port 8500)
         ip saddr {{ wireguard_address_network_part }}.0/24 tcp dport 8500 accept
-    }
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ wireguard_address_network_ipv6_prefix }}::/64 tcp dport 8500 accept
+        # END EXPERIMENTAL
+        #
+}
 
     chain forward {
         # By default, drop forwarded traffic
@@ -123,12 +151,12 @@ table inet nat {
         ip saddr {{ lxd_host_network_part }}.0/24 oifname "eth*" masquerade
         ip saddr {{ lxd_host_network_part }}.0/24 oifname "en*" masquerade
         #
-        # THE FOLLOWING IS EXPERIMENTAL
+        # THE FOLLOWING IS EXPERIMENTAL - SHOULD NOT BE NEEDED!!!
         # LXD network IPv6 NATting for traffic to internet
         # Note: this provides IPv6 NAT **to the internet** for LXD containers in LXD host network without
         # using ipv6.nat=true on the LXD network definition (which would also NAT **between** LXD networks)
-        ip6 saddr {{ lxd_host_network_ipv6_prefix }}::0/64 oifname "eth*" masquerade
-        ip6 saddr {{ lxd_host_network_ipv6_prefix }}::0/64 oifname "en*" masquerade
+        #ip6 saddr {{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:0/112 oifname "eth*" masquerade
+        #ip6 saddr {{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:0/112 oifname "en*" masquerade
         # END EXPERIMENTAL
         #
 

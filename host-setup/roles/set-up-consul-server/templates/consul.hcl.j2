@@ -7,12 +7,28 @@ domain     = "ryo"
 
 server                = true
 bootstrap_expect      = 1
-client_addr           = "{{ lxd_host_network_part }}.1"   
-bind_addr             = "{{ lxd_host_network_part }}.1"
-advertise_addr        = "{{ lxd_host_network_part }}.1"
-advertise_addr_wan    = "{{ lxd_host_network_part }}.1"
 
-retry_join_wan        = [ "{{ veth0_network_part }}.1" ]
+#
+# THE FOLLOWING IS EXPERIMENTAL
+#client_addr           = "{{ lxd_host_network_part }}.1"   
+client_addr           = "{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1"   
+
+#bind_addr             = "{{ lxd_host_network_part }}.1"
+bind_addr             = "{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1"
+
+#advertise_addr        = "{{ lxd_host_network_part }}.1"
+#advertise_addr_ipv4   = "{{ lxd_host_network_part }}.1"
+advertise_addr_ipv6   = "{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1"
+
+#advertise_addr_wan    = "{{ lxd_host_network_part }}.1"
+advertise_addr_wan    = "{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1"
+
+#retry_join_wan        = [ "{{ veth0_network_part }}.1" ]
+retry_join_wan        = [ "{{ veth0_network_ipv6_prefix }}::1" ]
+
+# END EXPERIMENTAL
+#
+
 retry_interval_wan    = "10s"
 reconnect_timeout_wan = "170880h"
 
