@@ -34,19 +34,19 @@ table inet filter {
         # Allow IPv6 DHCPv6 on LXD network interface
         iifname "{{ host_id }}" udp dport dhcpv6-client accept
 
-        # Allow inbound SSH to the host server on custom TCP port
-        ip daddr {{ host_public_ip }}/32 tcp dport {{ host_new_ssh_port }} accept
-        #
-        # THE FOLLOWING IS EXPERIMENTAL
-        ip6 daddr {{ host_public_ipv6_address }}/128 tcp dport {{ host_new_ssh_port }} accept
-        # END EXPERIMENTAL
-        #
-
         # Allow inbound traffic to the host server on Wireguard UDP port
         ip daddr {{ host_public_ip }}/32 udp dport {{ host_wireguard_port }} accept
         #
         # THE FOLLOWING IS EXPERIMENTAL
         ip6 daddr {{ host_public_ipv6_address }}/128 udp dport {{ host_wireguard_port }} accept
+        # END EXPERIMENTAL
+        #
+
+        # Allow inbound SSH to the host server on custom TCP port from the wireguard network
+        ip saddr {{ wireguard_address_network_part }}.0/24 tcp dport {{ host_new_ssh_port }} accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ wireguard_address_network_ipv6_prefix }}::/64 tcp dport {{ host_new_ssh_port }} accept
         # END EXPERIMENTAL
         #
 
