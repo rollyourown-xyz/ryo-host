@@ -31,23 +31,38 @@ table inet filter {
         icmp type echo-request limit rate 5/second accept
         icmpv6 type echo-request limit rate 5/second accept
 
-        # Allow IPv6 DHCPv6
-        udp dport dhcpv6-client accept
+        # Allow IPv6 DHCPv6 on LXD network interface
+        iifname "{{ host_id }}" udp dport dhcpv6-client accept
 
-        # Allow inbound SSH on custom TCP port
-        tcp dport {{ host_new_ssh_port }} accept
+        # Allow inbound SSH to the host server on custom TCP port
+        ip daddr {{ host_public_ip }}/32 tcp dport {{ host_new_ssh_port }} accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 daddr {{ host_public_ipv6_address }}/128 tcp dport {{ host_new_ssh_port }} accept
+        # END EXPERIMENTAL
+        #
 
-        # Allow inbound traffic on Wireguard UDP port
-        udp dport {{ host_wireguard_port }} accept
+        # Allow inbound traffic to the host server on Wireguard UDP port
+        ip daddr {{ host_public_ip }}/32 udp dport {{ host_wireguard_port }} accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 daddr {{ host_public_ipv6_address }}/128 udp dport {{ host_wireguard_port }} accept
+        # END EXPERIMENTAL
+        #
 
         # Allow inbound LXD remote traffic from wireguard network
         ip saddr {{ wireguard_address_network_part }}.0/24 ip daddr {{ wireguard_address_network_part }}.2/32 tcp dport 8443 accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ wireguard_address_network_ipv6_prefix }}::/64 ip6 daddr {{ wireguard_address_network_ipv6_prefix }}::2/128 tcp dport 8443 accept
+        # END EXPERIMENTAL
+        #
 
 
         ## Consul Ports
         ###############
 
-        # Allow on UDP from LXD host network:
+        # Allow Consul ports on UDP from LXD host network:
         # - Consul LAN Serf (Port 8301)
         # - Consul WAN Serf (Port 8302)
         # - Consul DNS server (Port 8600)
@@ -58,7 +73,7 @@ table inet filter {
         # END EXPERIMENTAL
         #
 
-        # Allow on TCP from LXD host network:
+        # Allow Consul ports on TCP from LXD host network:
         # - Consul Server RPC (Port 8300)
         # - Consul LAN Serf (Port 8301)
         # - Consul WAN Serf (Port 8302)
@@ -71,7 +86,7 @@ table inet filter {
         # END EXPERIMENTAL
         #
 
-        # Allow on UDP from control-node consul server:
+        # Allow Consul ports on UDP from control-node consul server:
         # - Consul WAN Serf (Port 8302)
         ip saddr {{ veth0_network_part }}.1/32 udp dport 8302 accept
         #
@@ -80,7 +95,7 @@ table inet filter {
         # END EXPERIMENTAL
         #
 
-        # Allow on TCP from control-node consul server:
+        # Allow Consul ports on TCP from control-node consul server:
         # - Consul Server RPC (Port 8300)
         # - Consul WAN Serf (Port 8302)
         # - Consul HTTP API (Port 8500)
@@ -91,7 +106,7 @@ table inet filter {
         # END EXPERIMENTAL
         #
 
-        # Allow on TCP from wireguard network:
+        # Allow Consul ports on TCP from wireguard network:
         # - Consul HTTP API (Port 8500)
         ip saddr {{ wireguard_address_network_part }}.0/24 tcp dport 8500 accept
         #
@@ -114,7 +129,7 @@ table inet filter {
         # By default, allow outbound traffic
         type filter hook output priority filter; policy accept;
 
-        # Allow outbound traffic to loopback interface
+        # Allow loopback outbound traffic to loopback interface only
         oifname "lo" accept
         oifname "lo" ip daddr != 127.0.0.0/8 drop
         oifname "lo" ip6 daddr != ::1/128 drop
