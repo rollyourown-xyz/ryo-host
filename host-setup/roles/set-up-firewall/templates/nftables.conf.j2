@@ -27,15 +27,8 @@ table inet filter {
         # Allow ICMPv6
         icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert} accept
 
-        # Allow inbound ICMP echo-request to host server with rate limit
-        ip daddr {{ host_public_ip }}/32 icmp type echo-request limit rate 5/second accept
-
-        # Allow inbound ICMP echo-request from wireguard network without rate limit
-        ip saddr {{ wireguard_address_network_part }}.0/24 icmp type echo-request accept
-
-        # Allow inbound ICMP echo-request from LXD network without rate limit
-        ip saddr {{ lxd_host_network_part }}.0/24 icmp type echo-request accept
-        #
+        # Allow inbound ICMP echo-request
+        icmp type echo-request accept
 
         # Allow IPv6 DHCPv6 on LXD network interface
         iifname "{{ host_id }}" udp dport dhcpv6-client accept
