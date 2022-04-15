@@ -27,9 +27,29 @@ table inet filter {
         # Allow IPv6 neighbour discovery
         icmpv6 type { nd-neighbor-solicit, nd-router-advert, nd-neighbor-advert } accept
 
-        # Allow inbound ICMP echo-request with rate limit
-        icmp type echo-request limit rate 5/second accept
-        icmpv6 type echo-request limit rate 5/second accept
+        # Allow inbound ICMP echo-request to host server with rate limit
+        ip daddr {{ host_public_ip }}/32 icmp type echo-request limit rate 5/second accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 daddr {{ host_public_ipv6_address }}/128 icmpv6 type echo-request limit rate 5/second accept
+        # END EXPERIMENTAL
+        #
+
+        # Allow inbound ICMP echo-request from wireguard network without rate limit
+        ip saddr {{ wireguard_address_network_part }}.0/24 icmp type echo-request accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ wireguard_address_network_ipv6_prefix }}::/64 icmpv6 type echo-request accept
+        # END EXPERIMENTAL
+        #
+
+        # Allow inbound ICMP echo-request from LXD network without rate limit
+        ip saddr {{ lxd_host_network_part }}.0/24 icmp type echo-request accept
+        #
+        # THE FOLLOWING IS EXPERIMENTAL
+        ip6 saddr {{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:0/112 icmpv6 type echo-request accept
+        # END EXPERIMENTAL
+        #
 
         # Allow IPv6 DHCPv6 on LXD network interface
         iifname "{{ host_id }}" udp dport dhcpv6-client accept
