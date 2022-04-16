@@ -24,11 +24,11 @@ table inet filter {
         # Allow inbound traffic on LXD network interface
         iifname "{{ host_id }}" accept
 
+        # Allow ICMPv4
+        icmp type { echo-reply, destination-unreachable, echo-request, time-exceeded } accept
+
         # Allow ICMPv6
         icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, echo-request, echo-reply, nd-router-solicit, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert, ind-neighbor-solicit, ind-neighbor-advert} accept
-
-        # Allow inbound ICMP echo-request
-        icmp type echo-request accept
 
         # Allow IPv6 DHCPv6 on LXD network interface
         iifname "{{ host_id }}" udp dport dhcpv6-client accept
