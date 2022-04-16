@@ -7,6 +7,7 @@ echo -n "DNS setup started"
 sudo lxc network list
 
 sudo resolvectl dns {{ host_id }} '{{ lxd_host_network_part }}.1'
+{% if host_public_ipv6 == true %}sudo resolvectl dns {{ host_id }} '{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1'{% else %}sudo resolvectl dns {{ host_id }} '{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1'{% endif%}
 sudo resolvectl domain {{ host_id }} '~{{ host_id }}'
 
 echo "DNS setup completed"

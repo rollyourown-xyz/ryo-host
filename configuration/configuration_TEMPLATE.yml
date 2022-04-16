@@ -33,17 +33,17 @@ host_control_ip: <IP ADDRESS>
 #     will be **different** to the host_control_ip parameter above
 host_public_ip: <IP ADDRESS>
 
-#
-# THE FOLLOWING IS EXPERIMENTAL
-# Add the public IPv6 prefix for your host server here (usually a /56 or /64 prefix)
-# This is the IPv6 prefix provided to you by your hosting provider
-# DO NOT add "/56" or "/64", only the prefix, REMOVE any trailing colons (":")
+# Change to true if you host server has been assigned a public IPv6 prefix
+host_public_ipv6: false
+# If your host server has been assigned a public IPv6 prefix, then add the following parameters,
+# otherwise, leave undefined.
+# Add the public IPv6 prefix for your host server here (usually a /56 or /64 prefix).
+# This is the IPv6 prefix provided to you by your hosting provider.
+# REMOVE any trailing colons (e.g. "::") and DO NOT add the prefix length (e.g. "/56" or "/64").
 host_public_ipv6_prefix: <IPV6 PREFIX>
 # Add the public IPv6 address of your host server here.
 # This is the IPv6 address from which your host server is reachable via public internet.
 host_public_ipv6_address: <IPV6 ADDRESS>
-# END EXPERIMENTAL
-#
 
 # Set the default SSH port, as provided by your server hosting provider
 host_initial_ssh_port: 22
@@ -81,38 +81,33 @@ host_new_ssh_port: 2222
 host_wireguard_port: 52222
 
 # Leave the following settings as default if this is the first host managed
-# by the control node. Change if other hosts are already configured on the control node
-# Make sure that these settings do not overlap with any other host - e.g. if
-# other hosts managed by the control node use "10.0.1"  and "10.0.2", then
-# set this to "10.0.3" and also change the network part for [host_wireguard_ip]
-# in the host inventory file
-# !! Make sure that the network part for [host_wireguard_ip] in the inventory file
-# !! is consistent with this parameter
+# by the control node. Change if other hosts are already configured on the control node.
+# Make sure that these settings DO NOT overlap with any other host - e.g. if
+# other hosts managed by the control node use "10.0.1" / "fd10:10:0:1" and
+# "10.0.2" / "fd10:10:0:2", then set these to "10.0.3" / "fd10:10:0:3"
+# MAKE SURE that the network part for [host_wireguard_ip] and [host_wireguard_ip6]
+# are also changed in the host inventory file
+# !! Make sure that the network prefix for [host_wireguard_ip] and [host_wireguard_ip6]
+# !! in the inventory file are consistent with these parameters
 wireguard_address_network_part: "10.0.1"
-#
-# THE FOLLOWING IS EXPERIMENTAL
 wireguard_address_network_ipv6_prefix: "fd10:10:0:1"
-# END EXPERIMENTAL
-#
 
 
 # Host LXD configuration
 #-----------------------------
 
-# Leave the following setting as default if this is the first host managed
-# by the control node. Change if other hosts are already configured on the control node
-# Make sure that this setting does not overlap with any other host LXD networks
-# For example, if other hosts managed by the control node use "10.10.1" 
-# and "10.10.2", then set this to "10.10.3"
-
+# Leave the following settings as default if this is the first host managed
+# by the control node. Change if other hosts are already configured on the control node.
+# Make sure that these settings DO NOT overlap with any other host LXD networks.
+# For example, if other hosts managed by the control node use "10.10.1" / "1" 
+# and "10.10.2" / "2", then set these to "10.10.3" / "3".
 lxd_host_network_part: "10.10.1"
-#
-# THE FOLLOWING IS EXPERIMENTAL
 lxd_host_network_ipv6_subnet: "1"
-# END EXPERIMENTAL
-#
+
+# The following setting should not need to be changed.
+lxd_host_private_ipv6_prefix: "fd10:10:10:1"
 
 # Change according to the available storage on the host. 
-# Set to leave at least 4GB for the operating system.
+# Set to leave at least 5GB for the operating system.
 lxd_storage_pool_size: 40GB
 

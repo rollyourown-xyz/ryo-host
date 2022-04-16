@@ -11,18 +11,18 @@ bootstrap_expect      = 1
 #
 # THE FOLLOWING IS EXPERIMENTAL
 #client_addr           = "{{ lxd_host_network_part }}.1"   
-client_addr           = "{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1"   
+client_addr           = {% if host_public_ipv6 == true %}"{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1"{% else %}"{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1"{% endif%}
 
 #bind_addr             = "{{ lxd_host_network_part }}.1"
-bind_addr             = "{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1"
+bind_addr             = {% if host_public_ipv6 == true %}"{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1"{% else %}"{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1"{% endif%}
 
 #advertise_addr        = "{{ lxd_host_network_part }}.1"
 advertise_addr_ipv4   = "{{ lxd_host_network_part }}.1"
-advertise_addr_ipv6   = "{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1"
+advertise_addr_ipv6   = {% if host_public_ipv6 == true %}"{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1"{% else %}"{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1"{% endif%}
 
 #advertise_addr_wan = "{{ lxd_host_network_part }}.1"
 advertise_addr_wan_ipv4 = "{{ lxd_host_network_part }}.1"
-advertise_addr_wan_ipv6 = "{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1"
+advertise_addr_wan_ipv6 = {% if host_public_ipv6 == true %}"{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1"{% else %}"{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1"{% endif%}
 
 #retry_join_wan        = [ "{{ veth0_network_part }}.1" ]
 retry_join_wan        = [ "{{ veth0_network_ipv6_prefix }}::1" ]

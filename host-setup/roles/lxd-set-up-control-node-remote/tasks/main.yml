@@ -14,6 +14,7 @@
     path: "/home/{{ local_non_root_user }}/snap/lxd/common/config/"
     state: directory
 
+
 - name: Add remotes configuration in control node remotes config file
   blockinfile:
     path: "/home/{{ local_non_root_user }}/snap/lxd/common/config/config.yml"
@@ -26,6 +27,9 @@
           protocol: lxd
           public: false
     marker: "  # {mark} ANSIBLE MANAGED BLOCK for {{ host_id }}"
+##
+## ADD IPv6 HERE
+##
 
 
 ## Add project host server certificate

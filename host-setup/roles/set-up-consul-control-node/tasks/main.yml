@@ -8,10 +8,22 @@
 - name: Add entry for host consul server in consul retry_join_wan
   lineinfile:
     dest: /etc/consul.d/consul.hcl
-    line: '"{{ lxd_host_network_part }}.1",'
+    #line: '"{{ lxd_host_network_part }}.1",'
+    line: '"{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1",'
     insertafter: '^retry_join_wan'
     state: present
   register: local_consul_changes_made
+  when: host_public_ipv6
+
+- name: Add entry for host consul server in consul retry_join_wan
+  lineinfile:
+    dest: /etc/consul.d/consul.hcl
+    #line: '"{{ lxd_host_network_part }}.1",'
+    line: '"{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1",'
+    insertafter: '^retry_join_wan'
+    state: present
+  register: local_consul_changes_made
+  when: not host_public_ipv6
 
 
 # Restart consul service on control-node
@@ -21,4 +33,3 @@
     name: consul
     state: restarted
   when: local_consul_changes_made is changed
-  
