@@ -35,12 +35,14 @@ host_public_ip: <IP ADDRESS>
 
 # Change to true if you host server has been assigned a public IPv6 prefix
 host_public_ipv6: false
+
 # If your host server has been assigned a public IPv6 prefix, then add the following parameters,
 # otherwise, leave undefined.
 # Add the public IPv6 prefix for your host server here (usually a /56 or /64 prefix).
 # This is the IPv6 prefix provided to you by your hosting provider.
 # REMOVE any trailing colons (e.g. "::") and DO NOT add the prefix length (e.g. "/56" or "/64").
 host_public_ipv6_prefix: <IPV6 PREFIX>
+
 # Add the public IPv6 address of your host server here.
 # This is the IPv6 address from which your host server is reachable via public internet.
 host_public_ipv6_address: <IPV6 ADDRESS>
