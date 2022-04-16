@@ -27,12 +27,12 @@
 # Copy consul service definition
 #
 - name: Copy consul service definition
-  copy:
+  template:
     mode: 0644
     owner: root
     group: root
     dest: /lib/systemd/system/consul.service
-    src: consul.service
+    src: consul.service.j2
     force: yes
 
 

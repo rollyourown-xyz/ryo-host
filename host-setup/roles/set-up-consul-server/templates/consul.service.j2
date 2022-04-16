@@ -4,7 +4,8 @@
 [Unit]
 Description="Consul service"
 Requires=network-online.target
-After=network-online.target
+BindsTo=sys-devices-virtual-net-{{ host_id}}.device snap.lxd.daemon.service
+After=network-online.target sys-devices-virtual-net-{{ host_id}}.device snap.lxd.daemon.service
 ConditionFileNotEmpty=/etc/consul.d/consul.hcl
 
 [Service]
