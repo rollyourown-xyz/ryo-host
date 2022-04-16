@@ -35,7 +35,8 @@ table inet filter {
 
         # Allow inbound traffic to the host server on Wireguard UDP port
         ip daddr {{ host_public_ip }}/32 udp dport {{ host_wireguard_port }} accept
-        {% if host_public_ipv6 == true %}ip6 daddr {{ host_public_ipv6_address }}/128 udp dport {{ host_wireguard_port }} accept{% endif%}
+        {% if host_public_ipv6 == true %}ip6 daddr {{ host_public_ipv6_address }}/128 udp dport {{ host_wireguard_port }} accept
+        {% endif%}
 
         # Allow inbound SSH to the host server on custom TCP port from the wireguard network
         ip saddr {{ wireguard_address_network_part }}.0/24 tcp dport {{ host_new_ssh_port }} accept
@@ -54,7 +55,8 @@ table inet filter {
         # - Consul WAN Serf (Port 8302)
         # - Consul DNS server (Port 8600)
         ip saddr {{ lxd_host_network_part }}.0/24 udp dport { 8301, 8302, 8600 } accept
-        {% if host_public_ipv6 == true %}{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 udp dport { 8301, 8302, 8600 } accept{% else %}{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 udp dport { 8301, 8302, 8600 } accept{% endif%}
+        {% if host_public_ipv6 == true %}{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 udp dport { 8301, 8302, 8600 } accept{% else %}{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 udp dport { 8301, 8302, 8600 } accept
+        {% endif%}
 
         # Allow Consul ports on TCP from LXD host network:
         # - Consul Server RPC (Port 8300)
@@ -63,7 +65,8 @@ table inet filter {
         # - Consul HTTP API (Port 8500)
         # - Consul DNS server (Port 8600)
         ip saddr {{ lxd_host_network_part }}.0/24 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
-        {% if host_public_ipv6 == true %}{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept{% else %}{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept{% endif%}
+        {% if host_public_ipv6 == true %}{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept{% else %}{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept
+        {% endif%}
 
         # Allow Consul ports on UDP from control-node consul server:
         # - Consul WAN Serf (Port 8302)
