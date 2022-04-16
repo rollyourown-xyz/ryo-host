@@ -28,13 +28,19 @@ networks:
     ipv4.dhcp.ranges: '{{ lxd_host_network_part }}.100-{{ lxd_host_network_part }}.254'
     ipv4.dhcp.expiry: 5m
     ipv4.nat: false
-    ipv6.address: {% if host_public_ipv6 == true %}'{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1/112'
-    {% else %}'{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1/112'
-    {% endif %}
+    ipv6.address: {% if host_public_ipv6 == true %}
+                  '{{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1/112'
+                  {% else %}
+                  '{{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1/112'
+                  {% endif %}
+    
     ipv6.dhcp: true
-    ipv6.dhcp.ranges: {% if host_public_ipv6 == true %}'{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1000-{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:ffff'
-    {% else %}'{{ lxd_host_private_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1000-{{ lxd_host_private_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:ffff'
-    {% endif %}
+    ipv6.dhcp.ranges: {% if host_public_ipv6 == true %}
+                      '{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1000-{{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:ffff'
+                      {% else %}
+                      '{{ lxd_host_private_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:1000-{{ lxd_host_private_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:ffff'
+                      {% endif %}
+
     ipv6.dhcp.stateful: true
     ipv6.firewall: false
     ipv6.nat: false
