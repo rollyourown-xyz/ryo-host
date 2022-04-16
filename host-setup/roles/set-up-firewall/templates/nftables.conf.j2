@@ -65,7 +65,7 @@ table inet filter {
         # - Consul LAN Serf (Port 8301)
         # - Consul WAN Serf (Port 8302)
         # - Consul DNS server (Port 8600)
-        saddr {{ lxd_host_network_part }}.0/24 udp dport { 8301, 8302, 8600 } ip accept
+        ip saddr {{ lxd_host_network_part }}.0/24 udp dport { 8301, 8302, 8600 } accept
         #
         # THE FOLLOWING IS EXPERIMENTAL
         ip6 saddr {{ host_public_ipv6_prefix }}::{{lxd_host_network_ipv6_subnet}}:0/112 udp dport { 8301, 8302, 8600 } accept
