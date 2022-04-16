@@ -55,10 +55,8 @@ table inet filter {
         # - Consul WAN Serf (Port 8302)
         # - Consul DNS server (Port 8600)
         ip saddr {{ lxd_host_network_part }}.0/24 udp dport { 8301, 8302, 8600 } accept
-        {% if host_public_ipv6 == true %}
-          {{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 udp dport { 8301, 8302, 8600 } accept
-        {% else %}
-          {{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 udp dport { 8301, 8302, 8600 } accept
+        {% if host_public_ipv6 == true %}ip6 saddr {{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 udp dport { 8301, 8302, 8600 } accept
+        {% else %}ip6 saddr {{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 udp dport { 8301, 8302, 8600 } accept
         {% endif %}
 
 
@@ -69,10 +67,8 @@ table inet filter {
         # - Consul HTTP API (Port 8500)
         # - Consul DNS server (Port 8600)
         ip saddr {{ lxd_host_network_part }}.0/24 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
-        {% if host_public_ipv6 == true %}
-          {{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept
-        {% else %}
-          {{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept
+        {% if host_public_ipv6 == true %}ip6 saddr {{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept
+        {% else %}ip6 saddr {{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept
         {% endif%}
 
 
