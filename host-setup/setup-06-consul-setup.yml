@@ -3,12 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Consul setup
-  #
-  # THE FOLLOWING IS EXPERIMENTAL - USING IPv6
-  #hosts: host_wireguard_ip
   hosts: host_wireguard_ip6
-  # END EXPERIMENTAL
-  #
   
   vars_files:
     # Control node configuration
