@@ -3,7 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Initialise LXD on the host
-  hosts: host_wireguard_ip
+  #
+  # THE FOLLOWING IS EXPERIMENTAL - USING IPv6
+  #hosts: host_wireguard_ip
+  hosts: host_wireguard_ip6
+  # END EXPERIMENTAL
+  #
   
   vars_files:
     # Control node configuration
@@ -46,7 +51,12 @@
 
 ## Add ubuntu-minimal as LXD remote on host
 - name: Add ubuntu-minimal as LXD remote on host 
-  hosts: host_wireguard_ip
+  #
+  # THE FOLLOWING IS EXPERIMENTAL - USING IPv6
+  #hosts: host_wireguard_ip
+  hosts: host_wireguard_ip6
+  # END EXPERIMENTAL
+  #
   
   vars_files:
     # Control node configuration
@@ -69,7 +79,12 @@
 
 
 - name: Add control node as LXD remote on host 
-  hosts: host_wireguard_ip
+  #
+  # THE FOLLOWING IS EXPERIMENTAL - USING IPv6
+  #hosts: host_wireguard_ip
+  hosts: host_wireguard_ip6
+  # END EXPERIMENTAL
+  #
   
   vars_files:
     # Control node configuration

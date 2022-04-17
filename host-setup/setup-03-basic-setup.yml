@@ -3,8 +3,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 - name: Basic host setup
-  hosts: host_wireguard_ip
-  
+  #
+  # THE FOLLOWING IS EXPERIMENTAL - USING IPv6
+  #hosts: host_wireguard_ip
+  hosts: host_wireguard_ip6
+  # END EXPERIMENTAL
+  #
+
   vars_files:
     # Control node configuration
     - "{{ playbook_dir }}/../../ryo-control-node/configuration/configuration.yml"
