@@ -14,11 +14,21 @@
   poll: 0
   when: changes_made is changed
 
+#
+# THE FOLLOWING IS EXPERIMENTAL - USING IPv6
+# - name: Change ansible IP address in the task
+#   set_fact:
+#     ansible_ssh_host: "{{ wireguard_address_network_part }}.2"
+#     ansible_ssh_port: "{{ host_new_ssh_port }}"
+#   when: changes_made is changed
+
 - name: Change ansible IP address in the task
   set_fact:
-    ansible_ssh_host: "{{ wireguard_address_network_part }}.2"
+    ansible_ssh_host: "{{ wireguard_address_network_ipv6_prefix }}::2"
     ansible_ssh_port: "{{ host_new_ssh_port }}"
   when: changes_made is changed
+# END EXPERIMENTAL
+#
 
 - name: Wait for host server to reboot
   wait_for_connection:
