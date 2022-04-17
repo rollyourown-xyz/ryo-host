@@ -10,18 +10,9 @@
 
 # Leave the following setting as default if this is the first host managed
 # by the control node. Change if other hosts are already configured on the control node
-# E.g. if other hosts managed by the control node use "10.0.1.2" and "10.0.2.2", then
-# set this to "10.0.3.2"
-# !! Make sure that this is **the same** as the parameter wireguard_address_network_part
-# !! in the configuration.yml file
-[host_wireguard_ip] 
-10.0.1.2
-
-# Leave the following setting as default if this is the first host managed
-# by the control node. Change if other hosts are already configured on the control node
 # E.g. if other hosts managed by the control node use "fd10:10:0:1::2" and "fd10:10:0:2::2", then
 # set this to "fd10:10:0:3::2"
-# !! Make sure that this is **the same** as the parameter wireguard_address_network_part
+# !! Make sure that this is **the same** as the parameter wireguard_network_ipv6_prefix
 # !! in the configuration.yml file
 [host_wireguard_ip6]
 fd10:10:0:1::2

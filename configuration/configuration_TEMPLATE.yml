@@ -82,17 +82,16 @@ host_new_ssh_port: 2222
 # Leave as default or change according to preference
 host_wireguard_port: 52222
 
-# Leave the following settings as default if this is the first host managed
+# Leave the following setting as default if this is the FIRST host managed
 # by the control node. Change if other hosts are already configured on the control node.
-# Make sure that these settings DO NOT overlap with any other host - e.g. if
-# other hosts managed by the control node use "10.0.1" / "fd10:10:0:1" and
-# "10.0.2" / "fd10:10:0:2", then set these to "10.0.3" / "fd10:10:0:3"
-# MAKE SURE that the network part for [host_wireguard_ip] and [host_wireguard_ip6]
-# are also changed in the host inventory file
-# !! Make sure that the network prefix for [host_wireguard_ip] and [host_wireguard_ip6]
-# !! in the inventory file are consistent with these parameters
-wireguard_address_network_part: "10.0.1"
-wireguard_address_network_ipv6_prefix: "fd10:10:0:1"
+# Make sure that this setting DOES NOT overlap with any other host - e.g. if
+# other hosts managed by the control node use "fd10:10:0:1" and
+# "fd10:10:0:2", then set this to "fd10:10:0:3"
+# MAKE SURE that the network part for [host_wireguard_ip6]
+# is also changed in the host inventory file
+# !! Make sure that the network prefix for [host_wireguard_ip6]
+# !! in the inventory file is consistent with this parameter
+wireguard_network_ipv6_prefix: "fd10:10:0:1"
 
 
 # Host LXD configuration

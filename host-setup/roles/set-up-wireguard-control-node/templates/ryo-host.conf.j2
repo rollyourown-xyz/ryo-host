@@ -8,10 +8,10 @@
 #-------------------------------------------------------------------------------------------
 [Interface]
 PrivateKey = {{ generated_host_private_key.stdout }}
-Address = {{ wireguard_address_network_part }}.2/32, {{ wireguard_address_network_ipv6_prefix }}::2/128
+Address = {{ wireguard_network_ipv6_prefix }}::2/128
 ListenPort = {{ host_wireguard_port }}
 
 [Peer]
 PublicKey = {{ generated_local_public_key.stdout }}
 PresharedKey = {{ generated_preshared_key.stdout }}
-AllowedIPs = {{ wireguard_address_network_part }}.1/32, {{ wireguard_address_network_ipv6_prefix }}::1/128, {{ [ veth0_network_part, ".1/32"] | join('') }}, {{ [ veth0_network_ipv6_prefix, "::1/128"] | join('') }}
+AllowedIPs = {{ wireguard_network_ipv6_prefix }}::1/128, {{ [ veth0_network_part, ".1/32"] | join('') }}, {{ [ veth0_network_ipv6_prefix, "::1/128"] | join('') }}

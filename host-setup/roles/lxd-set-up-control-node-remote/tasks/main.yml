@@ -15,35 +15,18 @@
     state: directory
 
 
-#
-# THE FOLLOWING IS EXPERIMENTAL - USING IPv6
-# - name: Add remotes configuration in control node remotes config file
-#   blockinfile:
-#     path: "/home/{{ local_non_root_user }}/snap/lxd/common/config/config.yml"
-#     insertafter: "^remotes:"
-#     block: |2
-#         {{ host_id }}:
-#           addr: https://{{ wireguard_address_network_part }}.2:8443
-#           auth_type: tls
-#           project: default
-#           protocol: lxd
-#           public: false
-#     marker: "  # {mark} ANSIBLE MANAGED BLOCK for {{ host_id }}"
-
 - name: Add remotes configuration in control node remotes config file
   blockinfile:
     path: "/home/{{ local_non_root_user }}/snap/lxd/common/config/config.yml"
     insertafter: "^remotes:"
     block: |2
         {{ host_id }}:
-          addr: https://[{{ wireguard_address_network_ipv6_prefix }}::2]:8443
+          addr: https://[{{ wireguard_network_ipv6_prefix }}::2]:8443
           auth_type: tls
           project: default
           protocol: lxd
           public: false
     marker: "  # {mark} ANSIBLE MANAGED BLOCK for {{ host_id }}"
-# END EXPERIMENTAL
-#
 
 
 ## Add project host server certificate

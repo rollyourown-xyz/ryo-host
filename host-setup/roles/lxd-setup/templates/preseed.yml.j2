@@ -3,12 +3,7 @@
 
 # Daemon settings
 config:
-  #
-  # THE FOLLOWING IS EXPERIMENTAL - USING IPv6
-  #core.https_address: '{{ wireguard_address_network_part }}.2:8443'
-  core.https_address: '[{{ wireguard_address_network_ipv6_prefix }}::2]:8443'
-  # END EXPERIMENTAL
-  #
+  core.https_address: '[{{ wireguard_network_ipv6_prefix }}::2]:8443'
   images.auto_update_interval: 6
 
 # Storage pools
