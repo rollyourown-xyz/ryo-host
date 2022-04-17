@@ -39,9 +39,11 @@ table inet filter {
 
 
         # Allow inbound SSH to the host server on custom TCP port from the wireguard network
+        ip saddr {{ wireguard_network_part }}.0/24 tcp dport {{ host_new_ssh_port }} accept
         ip6 saddr {{ wireguard_network_ipv6_prefix }}::/64 tcp dport {{ host_new_ssh_port }} accept
 
         # Allow inbound LXD remote traffic from wireguard network
+        ip saddr {{ wireguard_network_part }}.0/24 ip daddr {{ wireguard_network_part }}.2/32 tcp dport 8443 accept
         ip6 saddr {{ wireguard_network_ipv6_prefix }}::/64 ip6 daddr {{ wireguard_network_ipv6_prefix }}::2/128 tcp dport 8443 accept
 
 
@@ -84,6 +86,7 @@ table inet filter {
 
         # Allow Consul ports on TCP from wireguard network:
         # - Consul HTTP API (Port 8500)
+        ip saddr {{ wireguard_network_part }}.0/24 tcp dport 8500 accept
         ip6 saddr {{ wireguard_network_ipv6_prefix }}::/64 tcp dport 8500 accept
 }
 
