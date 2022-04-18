@@ -67,28 +67,43 @@ table inet filter {
         # - Consul HTTP API (Port 8500)
         # - Consul DNS server (Port 8600)
         ip saddr {{ lxd_host_network_part }}.0/24 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
-        {% if host_public_ipv6 == true %}ip6 saddr {{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept
-        {% else %}ip6 saddr {{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8301, 8302, 8600 } accept
+        {% if host_public_ipv6 == true %}ip6 saddr {{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
+        {% else %}ip6 saddr {{ lxd_host_private_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:0/112 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
         {% endif%}
 
 
         # Allow Consul ports on UDP from control-node consul server:
+        # - Consul LAN Serf (Port 8301)
         # - Consul WAN Serf (Port 8302)
-        ip saddr {{ veth0_network_part }}.1/32 udp dport 8302 accept
-        ip6 saddr {{ veth0_network_ipv6_prefix }}::1/128 udp dport 8302 accept
+        # - Consul DNS server (Port 8600)
+        ip saddr {{ veth0_network_part }}.1/32 udp dport { 8301, 8302, 8600 } accept
+        ip6 saddr {{ veth0_network_ipv6_prefix }}::1/128 udp dport { 8301, 8302, 8600 } accept
 
         # Allow Consul ports on TCP from control-node consul server:
         # - Consul Server RPC (Port 8300)
         # - Consul LAN Serf (Port 8301)
         # - Consul WAN Serf (Port 8302)
         # - Consul HTTP API (Port 8500)
-        ip saddr {{ veth0_network_part }}.1/32 tcp dport { 8300, 8301, 8302, 8500 } accept
-        ip6 saddr {{ veth0_network_ipv6_prefix }}::1/128 tcp dport { 8300, 8301, 8302, 8500 } accept
+        # - Consul DNS server (Port 8600)
+        ip saddr {{ veth0_network_part }}.1/32 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
+        ip6 saddr {{ veth0_network_ipv6_prefix }}::1/128 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
+
+        # Allow Consul ports on UDP from wireguard network:
+        # - Consul LAN Serf (Port 8301)
+        # - Consul WAN Serf (Port 8302)
+        # - Consul DNS server (Port 8600)
+        ip saddr {{ wireguard_network_part }}.0/24 udp dport { 8301, 8302, 8600 } accept
+        ip6 saddr {{ wireguard_network_ipv6_prefix }}::/64 udp dport { 8301, 8302, 8600 } accept
 
         # Allow Consul ports on TCP from wireguard network:
+        # - Consul Server RPC (Port 8300)
+        # - Consul LAN Serf (Port 8301)
+        # - Consul WAN Serf (Port 8302)
         # - Consul HTTP API (Port 8500)
-        ip saddr {{ wireguard_network_part }}.0/24 tcp dport 8500 accept
-        ip6 saddr {{ wireguard_network_ipv6_prefix }}::/64 tcp dport 8500 accept
+        # - Consul DNS server (Port 8600)
+        ip saddr {{ wireguard_network_part }}.0/24 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
+        ip6 saddr {{ wireguard_network_ipv6_prefix }}::/64 tcp dport { 8300, 8301, 8302, 8500, 8600 } accept
+
 }
 
     chain forward {
