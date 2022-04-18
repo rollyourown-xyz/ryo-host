@@ -79,10 +79,11 @@ table inet filter {
 
         # Allow Consul ports on TCP from control-node consul server:
         # - Consul Server RPC (Port 8300)
+        # - Consul LAN Serf (Port 8301)
         # - Consul WAN Serf (Port 8302)
         # - Consul HTTP API (Port 8500)
-        ip saddr {{ veth0_network_part }}.1/32 tcp dport { 8300, 8302, 8500 } accept
-        ip6 saddr {{ veth0_network_ipv6_prefix }}::1/128 tcp dport { 8300, 8302, 8500 } accept
+        ip saddr {{ veth0_network_part }}.1/32 tcp dport { 8300, 8301, 8302, 8500 } accept
+        ip6 saddr {{ veth0_network_ipv6_prefix }}::1/128 tcp dport { 8300, 8301, 8302, 8500 } accept
 
         # Allow Consul ports on TCP from wireguard network:
         # - Consul HTTP API (Port 8500)
