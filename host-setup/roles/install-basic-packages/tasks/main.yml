@@ -29,16 +29,6 @@
   register: changes_made
 
 
-# Install glances - optional, e.g. for inspecting server resource usage
-#
-- name: Install glances
-  apt:
-    name: glances
-    update_cache: yes
-    state: present
-  register: changes_made
-
-
 # Install unzip
 #
 - name: Install unzip
