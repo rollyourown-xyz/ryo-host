@@ -46,3 +46,12 @@
     name: rsync
     update_cache: yes
     state: present
+
+
+# Install acl
+#
+- name: Install acl
+  apt:
+    name: acl
+    update_cache: yes
+    state: present
