@@ -4,7 +4,7 @@
 
 - name: Copy firewall configuration
   template:
-    mode: 0770
+    mode: 0660
     owner: root
     group: root
     dest: /etc/nftables.conf
