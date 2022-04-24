@@ -23,3 +23,14 @@
     state: present
     reload: yes
   register: changes_made
+
+# Set ipv6 NDP proxying
+#
+- name: Enable ipv6 NDP proxy
+  sysctl:
+    name: net.ipv6.conf.all.proxy_ndp
+    value: '1'
+    sysctl_set: yes
+    state: present
+    reload: yes
+  register: changes_made

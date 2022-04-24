@@ -24,9 +24,11 @@
   roles:
     - role: set-hostname
     - role: install-nftables
+    - role: install-ndppd
     - role: install-basic-packages
     - role: enable-packet-forwarding
     - role: enable-br_netfilter
     - role: set-up-ssh
     - role: set-up-firewall
+    - role: set-up-ndppd
     - role: reboot-host
