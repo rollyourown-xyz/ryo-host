@@ -25,4 +25,4 @@
     - role: lxd-setup
     - role: lxd-tune-host
     - role: lxd-container-directories-generic
-
+    - role: reboot-host
