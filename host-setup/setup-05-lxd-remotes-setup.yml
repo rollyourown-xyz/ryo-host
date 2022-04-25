@@ -89,4 +89,3 @@
   
   roles:
     - role: lxd-set-up-project-host-remote
-    - role: reboot-host

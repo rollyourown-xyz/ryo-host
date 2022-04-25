@@ -24,3 +24,4 @@
   roles:
     - role: install-consul
     - role: set-up-consul-server
+    - role: reboot-host
