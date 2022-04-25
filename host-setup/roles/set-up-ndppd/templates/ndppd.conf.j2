@@ -2,7 +2,7 @@
 # SPDX-FileCopyrightText: 2022 Wilfred Nicoll <xyzroller@rollyourown.xyz>
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-proxy eth0 {
+proxy {{ ansible_default_ipv4.interface }} {
     rule {{ host_public_ipv6_prefix }}::{{ lxd_host_network_ipv6_subnet }}:1/112 {
         iface {{ host_id }}
         router no

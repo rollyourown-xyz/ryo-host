@@ -149,7 +149,6 @@ table inet nat {
         # LXD network IPv4 NATting for traffic to internet
         # Note: this provides IPv4 NAT **to the internet** for LXD containers in LXD host network without
         # using ipv4.nat=true on the LXD network definition (which would also NAT **between** LXD networks)
-        oifname "eth*" ip saddr {{ lxd_host_network_part }}.0/24 masquerade
-        oifname "en*" ip saddr {{ lxd_host_network_part }}.0/24 masquerade
+        oifname "{{ ansible_default_ipv4.interface }}" ip saddr {{ lxd_host_network_part }}.0/24 masquerade
     }
 }
