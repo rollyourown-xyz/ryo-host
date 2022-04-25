@@ -51,13 +51,24 @@
     mode: 644
     owner: root
     group: root
-    dest: "{{ playbook_dir }}/../configuration/{{ host_id }}.conf"
+    dest: "{{ playbook_dir }}/../configuration/{{ host_id }}_wg.conf"
     src: ryo-host.conf.j2
 
 
 # Create local wireguard configuration file
 #
 - name: Create local wireguard configuration file
+  template:
+    mode: 640
+    owner: root
+    group: root
+    dest: "{{ playbook_dir }}/../configuration/{{ host_id }}_wg_local.conf"
+    src: ryo-local.conf.j2
+
+
+# Copy local wireguard configuration file to /etc/wireguard
+#
+- name: Copy local wireguard configuration file to wireguard config
   template:
     mode: 640
     owner: root

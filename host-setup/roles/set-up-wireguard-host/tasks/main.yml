@@ -8,7 +8,7 @@
     owner: root
     group: root
     dest: /etc/wireguard/wg0.conf
-    src: "{{ playbook_dir }}/../configuration/{{ host_id }}.conf"
+    src: "{{ playbook_dir }}/../configuration/{{ host_id }}_wg.conf"
     force: yes
   register: host_wg_config_changes_made
 
@@ -19,3 +19,4 @@
     enabled: yes
     state: restarted
   when: host_wg_config_changes_made is changed
+  
