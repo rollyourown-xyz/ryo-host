@@ -31,3 +31,4 @@
     - role: set-up-ssh
     - role: set-up-firewall
     - role: set-up-ndppd
+    - role: reboot-host
