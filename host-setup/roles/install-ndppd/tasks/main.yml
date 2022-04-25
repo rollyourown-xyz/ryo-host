@@ -7,5 +7,4 @@
     name: ndppd
     update_cache: yes
     state: present
-  register: changes_made
   when: host_public_ipv6

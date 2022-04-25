@@ -10,5 +10,4 @@
     dest: /etc/ndppd.conf
     src: ndppd.conf.j2
     force: yes
-  register: changes_made
   when: host_public_ipv6
