@@ -9,13 +9,13 @@ This repository contains automation code to set up a rollyourown [host server](h
 
 ## Summary
 
-This project uses [Ansible](https://www.ansible.com/) to deploy the software and configuration needed for a [rollyourown.xyz host server](https://rollyourown.xyz/rollyourown/how_to_use/host_server/).
+This project uses [Ansible](https://www.ansible.com/) to deploy the software and configuration needed for a [rollyourown host server](https://rollyourown.xyz/rollyourown/how_to_use/host_server/).
 
 ## How to Use
 
-A detailed description of how to use a rollyourown.xyz project to deploy and maintain an open source solution can be found [on the rollyourown.xyz website](https://rollyourown.xyz/rollyourown/how_to_use/).
+A detailed description of how to use a rollyourown project to deploy and maintain an open source solution can be found [on the rollyourown website](https://rollyourown.xyz/rollyourown/how_to_use/).
 
-Before deploying a host server, a [rollyourown.xyz control node](https://rollyourown.xyz/rollyourown/how_to_use/control_node/) must be set up first. A host server is controlled by a control node via a secure [wireguard](https://www.wireguard.com/) tunnel.
+Before deploying a host server, a [rollyourown control node](https://rollyourown.xyz/rollyourown/how_to_use/control_node/) must be set up first. A host server is controlled by a control node via a secure [wireguard](https://www.wireguard.com/) tunnel.
 
 In summary, after setting up a control node then deploy a host server as follows:
 
@@ -27,10 +27,12 @@ In summary, after setting up a control node then deploy a host server as follows
 
         git clone https://github.com/rollyourown-xyz/ryo-host
 
-2. Choose a name (e.g. "host-1") for the host server, enter the `ryo-host` directory and copy the file `configuration/configuration_TEMPLATE.yml` to a new file `configuration/configuration_<HOST_NAME>.yml`, replacing <HOST_NAME> with the name chosen:
+2. Choose a name (e.g. "host1") for the host server, enter the `ryo-host` directory and copy the file `configuration/configuration_TEMPLATE.yml` to a new file `configuration/configuration_<HOST_NAME>.yml`, replacing <HOST_NAME> with the name chosen:
 
         cd ryo-host
         cp configuration/configuration_TEMPLATE.yml configuration/configuration_<HOST_NAME>.yml
+
+    **NOTE:** The host name should be a combination of ONLY upper and lower case letters and numbers, with no spaces, dashes or other symbols
 
 3. Edit the new file `configuration_<HOST_NAME>.yml` and add the host server's public (and if applicable private) IP address, and the root username and password. Also choose a non-root username and password for the host server. If you aren’t familiar with a different Linux editor, use nano to edit the file with:
 
@@ -40,7 +42,7 @@ In summary, after setting up a control node then deploy a host server as follows
 
        cp configuration/inventory_TEMPLATE configuration/inventory_<HOST_NAME>
 
-5. Edit the new file `inventory_<HOST_NAME>` and add the host server's public IP address:
+5. Edit the new file `inventory_<HOST_NAME>` and add the host server's IPv4 address:
 
         nano configuration/inventory_<HOST_NAME>
 
@@ -50,7 +52,7 @@ In summary, after setting up a control node then deploy a host server as follows
 
         ./host-setup.sh -n <HOST_NAME>
 
-After setting up the host server, you are now ready to [deploy a rollyourown.xyz project](/rollyourown/how_to_use/deploy) on the server.
+After setting up the host server, you are now ready to [deploy a rollyourown project](/rollyourown/how_to_use/deploy) on the server.
 
 ## How to Collaborate
 
@@ -63,12 +65,12 @@ We would be delighted if you would like to contribute to rollyourown and there a
 You may also like to contribute to the wider rollyourown project by, for example:
 
 - [Contributing a new project or module](https://rollyourown.xyz/collaborate/new_projects_and_modules/)
-- [Contributing to the rollyourown.xyz website content](https://rollyourown.xyz/collaborate/website_content/) or [design](https://rollyourown.xyz/collaborate/website_design/)
-- [Maintaining a rollyourown.xyz repository](https://rollyourown.xyz/collaborate/working_with_git/what_is_git/#project-maintainer)
+- [Contributing to the rollyourown website content](https://rollyourown.xyz/collaborate/website_content/) or [design](https://rollyourown.xyz/collaborate/website_design/)
+- [Maintaining a rollyourown repository](https://rollyourown.xyz/collaborate/working_with_git/what_is_git/#project-maintainer)
 
 Issues for this project can be submitted on [Codeberg](https://codeberg.org/) (_preferred_) or [GitHub](https://github.com/):
 
-- Issues on Codeberg: [here](https://codeberg.org/rollyourown-xyz/ryo-host>/issues)
+- Issues on Codeberg: [here](https://codeberg.org/rollyourown-xyz/ryo-host/issues)
 - Issues on GitHub: [here](https://github.com/rollyourown-xyz/ryo-host/issues)
 
 ## Security Vulnerabilities
