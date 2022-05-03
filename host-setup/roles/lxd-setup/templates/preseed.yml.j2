@@ -42,15 +42,38 @@ networks:
     ipv6.nat: false
     dns.mode: managed
     dns.domain: {{ host_id }}
+- name: build
+  description: "Packer build network"
+  type: bridge
+  managed: true
+  config:
+    ipv4.address: '172.16.20.1/24'
+    ipv4.dhcp: true
+    ipv4.dhcp.expiry: 5m
+    ipv4.nat: true
+    ipv6.address: none
+    dns.mode: managed
+    dns.domain: packer
 
 # Profiles
 profiles:
 - name: default
-  description: Default LXD profile
+  description: "Project container profile"
   devices:
     eth0:
       name: eth0
       network: {{ host_id }}
+      type: nic
+    root:
+      path: /
+      pool: lxd
+      type: disk
+- name: build
+  description: "Packer build profile"
+  devices:
+    eth0:
+      name: eth0
+      network: build
       type: nic
     root:
       path: /
