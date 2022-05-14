@@ -35,14 +35,18 @@
 - name: Make sure LXD snap package is installed
   snap:
     name: lxd
-    channel: 4.0/stable
+    channel: 5.0/stable
     state: present
   register: changes_made
 
 
+- name: Ensure the LXD snap package is updated
+  command: snap refresh --channel=5.0/stable lxd
+
+
 - name: Enable shiftfs for LXD
   command: snap set lxd shiftfs.enable=true
-  
+
 
 - name: Add non-root user to the lxd group
   user:
