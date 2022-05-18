@@ -23,7 +23,7 @@
     privatekey_path: "{{ ph_server_privatekey.filename }}"
     common_name: "{{host_id}}.ryo-project"
     subject_alt_name: "IP:{{ wireguard_network_ipv6_prefix }}::2"
-    organization_name: "rollyourown.xyz {{host_id}} Host"
+    organization_name: "rollyourown {{host_id}} Host"
     organizational_unit_name: "{{host_id}} Host"
     state: present
   register: ph_server_csr
@@ -58,7 +58,7 @@
     path: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-client.csr"
     privatekey_path: "{{ ph_client_privatekey.filename }}"
     common_name: "{{host_id}}.ryo-project"
-    organization_name: "rollyourown.xyz {{host_id}} Host"
+    organization_name: "rollyourown {{host_id}} Host"
     organizational_unit_name: "{{host_id}} Host"
     state: present
   register: ph_client_csr
