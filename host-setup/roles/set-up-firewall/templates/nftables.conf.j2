@@ -36,6 +36,9 @@ table inet filter {
         # Allow IPv6 DHCPv6 on LXD network interface
         iifname "{{ host_id }}" udp dport dhcpv6-client accept
 
+        # Allow IPv6 DHCPv6 on Packer build LXD network interface
+        iifname "build" udp dport dhcpv6-client accept
+
         # Allow inbound traffic to the host server on Wireguard UDP port
         ip daddr {{ host_public_ip }}/32 udp dport {{ host_wireguard_port }} accept
         {% if host_public_ipv6 == true %}ip6 daddr {{ host_public_ipv6_address }}/128 udp dport {{ host_wireguard_port }} accept{% endif %}
@@ -116,6 +119,10 @@ table inet filter {
         # Allow forwarding to and from LXD network interface
         iifname "{{ host_id }}" accept
         oifname "{{ host_id }}" accept
+
+        # Allow forwarding to and from Packer build LXD network interface
+        iifname "build" accept
+        oifname "build" accept
     }
 
     chain output {
