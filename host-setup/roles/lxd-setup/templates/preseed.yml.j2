@@ -47,11 +47,15 @@ networks:
   type: bridge
   managed: true
   config:
-    ipv4.address: '172.16.20.1/24'
+    ipv4.address: auto
     ipv4.dhcp: true
     ipv4.dhcp.expiry: 5m
     ipv4.nat: true
-    ipv6.address: none
+    ipv6.address: auto
+    ipv6.dhcp: true
+    ipv6.dhcp.stateful: false
+    ipv6.firewall: false
+    ipv6.nat: true
     dns.mode: managed
     dns.domain: build
 
