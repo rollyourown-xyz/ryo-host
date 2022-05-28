@@ -24,6 +24,9 @@ table inet filter {
         # Allow inbound traffic on LXD network interface
         iifname "{{ host_id }}" accept
 
+        # Allow inbound traffic on Packer build LXD network interface
+        iifname "build" accept
+
         # Allow ICMPv4
         icmp type { echo-reply, destination-unreachable, echo-request, time-exceeded } accept
 
