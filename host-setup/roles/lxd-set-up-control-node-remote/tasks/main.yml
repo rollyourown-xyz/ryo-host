@@ -5,8 +5,7 @@
 
 ## Add remotes configuration file on control node
 
-## Ensure the local non-root user snap lxd common configuration directory is present
-
+# Ensure the local non-root user snap lxd common configuration directory is present
 - name: Ensure the local non-root user snap lxd common configuration directory is present
   file:
     owner: "{{ local_non_root_user }}"
@@ -14,7 +13,7 @@
     path: "/home/{{ local_non_root_user }}/snap/lxd/common/config/"
     state: directory
 
-
+# Add remotes configuration in control node remotes config file
 - name: Add remotes configuration in control node remotes config file
   blockinfile:
     path: "/home/{{ local_non_root_user }}/snap/lxd/common/config/config.yml"
@@ -31,6 +30,7 @@
 
 ## Add project host server certificate
 
+# Ensure servercerts directory exists
 - name: Ensure servercerts directory exists
   file:
     owner: "{{ local_non_root_user }}"
@@ -38,10 +38,12 @@
     path: "/home/{{ local_non_root_user }}/snap/lxd/common/config/servercerts"
     state: directory
 
-- name: Copy project host server certificate
+# Copy host server certificate
+- name: Copy host server certificate
   copy:
     mode: 0664
     owner: "{{ local_non_root_user }}"
     group: "{{ local_non_root_user }}"
     dest: "/home/{{ local_non_root_user }}/snap/lxd/common/config/servercerts/{{ host_id }}.crt"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-server.crt"
+    force: yes

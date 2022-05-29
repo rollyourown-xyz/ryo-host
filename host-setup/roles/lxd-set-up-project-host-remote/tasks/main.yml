@@ -5,11 +5,13 @@
 
 ## Add the control node CA cert as trusted
 
+# Ensure certs directory exists
 - name: Ensure certs directory exists
   file:
     path: /usr/local/share/ca-certificates
     state: directory
 
+# Install CA certificate to certs directory
 - name: Install CA certificate to certs directory
   copy:
     mode: 0664
@@ -17,79 +19,94 @@
     group: root
     dest: "/usr/local/share/ca-certificates/control-node-ca.crt"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/ca.crt"
+    force: yes
   register: changes_made
 
+# Update certificate index
 - name: Update certificate index
   shell:
     cmd: /usr/sbin/update-ca-certificates
 
 
-## Add project host client certificate and key
+## Add host client certificate and key
 
-- name: Copy project host client certificate
+# Copy host client certificate
+- name: Copy host client certificate
   copy:
     mode: 0664
     owner: "{{ host_non_root_user }}"
     group: "{{ host_non_root_user }}"
     dest: "/home/{{ host_non_root_user }}/snap/lxd/common/config/client.crt"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-client.crt"
+    force: yes
   register: changes_made
 
-- name: Copy project host client private key
+# Copy host client private key
+- name: Copy host client private key
   copy:
     mode: 0600
     owner: "{{ host_non_root_user }}"
     group: "{{ host_non_root_user }}"
     dest: "/home/{{ host_non_root_user }}/snap/lxd/common/config/client.key"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-client.key"
+    force: yes
   register: changes_made
 
 
-## Add project host server certificate and key
+## Add host server certificate and key
 
-- name: Copy project host server certificate
+# Copy host server certificate
+- name: Copy host server certificate
   copy:
     mode: 0644
     owner: root
     group: root
     dest: "/var/snap/lxd/common/lxd/server.crt"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-server.crt"
+    force: yes
   register: changes_made
 
-- name: Copy project host server private key
+# Copy host server private key
+- name: Copy host server private key
   copy:
     mode: 0600
     owner: root
     group: root
     dest: "/var/snap/lxd/common/lxd/server.key"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/{{host_id}}-server.key"
+    force: yes
   register: changes_made
 
 
 ## Enable PKI mode: copy CA certificate to client and server configuration
 
-- name: Copy CA certificate to control node server configuration
+# Copy CA certificate to host server configuration
+- name: Copy CA certificate to host server configuration
   copy:
     mode: 0644
     owner: root
     group: root
     dest: "/var/snap/lxd/common/lxd/server.ca"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/ca.crt"
+    force: yes
   register: changes_made
 
-- name: Copy CA certificate to control node client configuration
+# Copy CA certificate to host client configuration
+- name: Copy CA certificate to host client configuration
   copy:
     mode: 0644
     owner: "{{ host_non_root_user }}"
     group: "{{ host_non_root_user }}"
     dest: "/home/{{ host_non_root_user }}/snap/lxd/common/config/client.ca"
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/ca.crt"
+    force: yes
   register: changes_made
 
 
-## Add the control node as LXD trusted TLS client for the project host
+## Add the control node as LXD trusted TLS client for the host
 
-- name: Copy control node client certificate to the project host
+# Copy control node client certificate to the host
+- name: Copy control node client certificate to the host
   copy:
     mode: 0644
     owner: "{{ host_non_root_user }}"
@@ -98,9 +115,9 @@
     src: "{{ playbook_dir }}/../../ryo-control-node/configuration/ca/control-node-client.crt"
   register: changes_made
 
+# Add the control node as LXD trusted TLS client for the project host
 - name: Add the control node as LXD trusted TLS client for the project host
   shell:
     cmd: 'lxc config trust add /home/{{ host_non_root_user }}/control-node-client.crt'
   become: yes
   become_user: "{{ host_non_root_user }}"
-  
