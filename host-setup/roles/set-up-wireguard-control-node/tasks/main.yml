@@ -3,11 +3,25 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 
+# Check existence of a previously generated wireguard host configuration
+- name: Check existence of a previously generated wireguard configuration
+  stat:
+    path: "{{ playbook_dir }}/../configuration/{{ host_id }}_wg.conf"
+  register: host_wg_conf_file
+
+# Check existence of a previously generated wireguard local configuration for the host
+- name: Check existence of a previously generated wireguard local configuration for the host
+  stat:
+    path: "{{ playbook_dir }}/../configuration/{{ host_id }}_wg_local.conf"
+  register: local_wg_conf_file
+
+
 # Generate wireguard host private key
 #
 - name: Generate wireguard host private key
   shell: "wg genkey"
   register: generated_host_private_key
+  when: (not host_wg_conf_file.stat.exists) or (not local_wg_conf_file.stat.exists)
 
 
 # Generate wireguard host public key
@@ -18,6 +32,7 @@
     stdin: "{{ generated_host_private_key.stdout }}"
     stdin_add_newline: no
   register: generated_host_public_key
+  when: (not host_wg_conf_file.stat.exists) or (not local_wg_conf_file.stat.exists)
 
 
 # Generate wireguard local private key
@@ -25,6 +40,7 @@
 - name: Generate wireguard local private key
   shell: "wg genkey"
   register: generated_local_private_key
+  when: (not host_wg_conf_file.stat.exists) or (not local_wg_conf_file.stat.exists)
 
 
 # Generate wireguard local public key
@@ -35,6 +51,7 @@
     stdin: "{{ generated_local_private_key.stdout }}"
     stdin_add_newline: no
   register: generated_local_public_key
+  when: (not host_wg_conf_file.stat.exists) or (not local_wg_conf_file.stat.exists)
 
 
 # Generate wireguard preshared key
@@ -42,6 +59,7 @@
 - name: Generate wireguard preshared key
   command: "wg genpsk"
   register: generated_preshared_key
+  when: (not host_wg_conf_file.stat.exists) or (not local_wg_conf_file.stat.exists)
 
 
 # Create host wireguard configuration file
@@ -53,6 +71,7 @@
     group: root
     dest: "{{ playbook_dir }}/../configuration/{{ host_id }}_wg.conf"
     src: ryo-host.conf.j2
+  when: (not host_wg_conf_file.stat.exists) or (not local_wg_conf_file.stat.exists)
 
 
 # Create local wireguard configuration file
@@ -64,6 +83,7 @@
     group: root
     dest: "{{ playbook_dir }}/../configuration/{{ host_id }}_wg_local.conf"
     src: ryo-local.conf.j2
+  when: (not host_wg_conf_file.stat.exists) or (not local_wg_conf_file.stat.exists)
 
 
 # Copy local wireguard configuration file to /etc/wireguard
@@ -75,6 +95,7 @@
     group: root
     dest: "/etc/wireguard/{{ host_id }}.conf"
     src: ryo-local.conf.j2
+  when: (not host_wg_conf_file.stat.exists) or (not local_wg_conf_file.stat.exists)
 
 
 # Enable wireguard interface {{ host_id }} as service
