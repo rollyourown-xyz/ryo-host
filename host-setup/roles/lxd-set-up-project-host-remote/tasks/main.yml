@@ -121,3 +121,4 @@
     cmd: 'lxc config trust add /home/{{ host_non_root_user }}/control-node-client.crt'
   become: yes
   become_user: "{{ host_non_root_user }}"
+  when: changes_made is changed
